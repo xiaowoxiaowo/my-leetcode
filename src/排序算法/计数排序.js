@@ -11,11 +11,11 @@ document.title = '计数排序法';
 function countSort(arrList) {
 	let list = arrList.slice();
 	let newArr = new Array(list.length).fill(0);
-	for (const value of list) {
-			newArr[value]++;
+	for (let v = 0; v < list.length; v++) {
+		newArr[list[v]]++;
 	}
 	list = [];
-	for(let i  =0; i < newArr.length; i++) {
+	for(let i = 0; i < newArr.length; i++) {
 			// 循环数字次数
 			for(let k = newArr[i]; k > 0; k--) {
 				list.push(i);
