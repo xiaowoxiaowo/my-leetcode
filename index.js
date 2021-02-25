@@ -1,1 +1,1 @@
-import './src/排序算法/计数排序.js';
+import './src/高级排序算法/归并排序.js';
