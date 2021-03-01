@@ -95,6 +95,7 @@ function mergeSortBU(arrList) {
 	}
 }
 
+
 const test = getRandomArray(100);
 
 pritnf(test, 1);
