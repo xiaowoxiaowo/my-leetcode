@@ -58,7 +58,7 @@ function _mergeSort(list, l, r) {
 	let mid = Math.floor((l + r)/2);
 	_mergeSort(list, l, mid);
 	_mergeSort(list, mid + 1, r);
-	if (list[mid] >= list[mid + 1]) {
+	if (list[mid] > list[mid + 1]) {
 		_merge(list, l, mid, r);
 	}
 }
