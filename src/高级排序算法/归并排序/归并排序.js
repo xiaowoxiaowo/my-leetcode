@@ -7,8 +7,8 @@ import {
 	swap, 
 	pritnf, 
 	getRandomArray
-} from '../utils';
-import { insertionSort2 } from '../排序算法/插入排序';
+} from '../../utils';
+import { insertionSort2 } from '../../排序算法/插入排序';
 
 document.title = '归并排序法';
 
@@ -94,6 +94,7 @@ function mergeSortBU(arrList) {
 		}
 	}
 }
+
 
 const test = getRandomArray(100);
 
