@@ -11,7 +11,7 @@ import {
   getRandomArray,
   getRandomNum,
   getNearlyArray
-} from '../utils';
+} from '../../utils';
 
 document.title = '三路快速排序法';
 
