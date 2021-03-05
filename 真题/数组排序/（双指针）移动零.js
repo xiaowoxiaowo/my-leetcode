@@ -14,7 +14,7 @@
  */
 import { swap } from '../../src/utils';
 
- function moveZeroes(nums) {
+function moveZeroes(nums) {
 	const len = nums.length;
 	let j = 0;
 	for (let i = 0; i < len; i++) {
