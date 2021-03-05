@@ -7,8 +7,8 @@ import {
 	swap, 
 	pritnf, 
 	getRandomArray
-} from '../utils';
-import { insertionSort2 } from '../排序算法/插入排序';
+} from '../../utils';
+import { insertionSort2 } from '../../排序算法/插入排序';
 
 document.title = '归并排序法';
 
@@ -58,7 +58,7 @@ function _mergeSort(list, l, r) {
 	let mid = Math.floor((l + r)/2);
 	_mergeSort(list, l, mid);
 	_mergeSort(list, mid + 1, r);
-	if (list[mid] >= list[mid + 1]) {
+	if (list[mid] > list[mid + 1]) {
 		_merge(list, l, mid, r);
 	}
 }
@@ -94,6 +94,7 @@ function mergeSortBU(arrList) {
 		}
 	}
 }
+
 
 const test = getRandomArray(100);
 

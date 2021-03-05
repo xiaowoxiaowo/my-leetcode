@@ -9,9 +9,10 @@ export function pritnf (text, type = 2) {
 }
 
 export function swap(arr, i, j) {
-  let temp = arr[i];
-  arr[i] = arr[j];
-  arr[j] = temp;
+	if (i === j ) return;
+	let temp = arr[i];
+	arr[i] = arr[j];
+	arr[j] = temp;
 }
 
 export function getRandomNum(low, high) {
