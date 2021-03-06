@@ -10,7 +10,7 @@ import {
 	pritnf, 
   getRandomArray,
   getRandomNum
-} from '../utils';
+} from '../../utils';
 
 document.title = '双路快速排序法';
 

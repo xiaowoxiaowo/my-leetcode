@@ -14,7 +14,7 @@ import {
 	pritnf, 
   getRandomArray,
   getRandomNum
-} from '../utils';
+} from '../../utils';
 
 document.title = '快速排序法';
 

@@ -1,1 +1,1 @@
-import './src/数组问题/二分查找法/二分查找法';
+import './practice';
