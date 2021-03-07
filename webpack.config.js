@@ -10,9 +10,9 @@ module.exports = {
       title: 'demo',
       template: './index.html'
     }),
-	],
-	mode: 'development',
-  // devtool: 'source-map',
+  ],
+  mode: 'development',
+  // devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
     hot: true

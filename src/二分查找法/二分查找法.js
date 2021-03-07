@@ -5,7 +5,7 @@
  * @param arrList 数组
  * @param target 目标值
  */
-import { swap, pritnf, getNearlyArray } from '../../utils';
+import { swap, pritnf, getNearlyArray } from '../utils';
 
 document.title = '二分查找法';
 
