@@ -19,5 +19,49 @@
  */
 
 var threeSum = function(nums) {
-
+  const len = nums.length;
+  if (len < 3) return [];
+  nums = nums.sort((a, b) => a - b);
+  let l = 0, r = len - 1, mid = 0, res = [];
+  while(l + 1 < r) {
+    const sum = nums[l] + nums[r];
+    let mid = Math.floor((r - l)/2);
+    const 
+    if (len - l === r + 1) {
+      l++;
+    } else {
+      r--;
+    }
+    if (sum > 0) {
+      if (sum + nums[l + 1] > 0) continue;
+      while (mid > l) {
+        if (sum + nums[mid] === 0) res.push([l, mid, r]);
+        mid--;
+      }
+    } else if (sum < 0) {
+      if (sum + nums[r - 1] < 0) continue;
+      while (mid < r) {
+        if (sum + nums[mid] === 0) res.push([l, mid, r]);
+        mid++;
+      }
+    } else {
+      while (mid < r && mid > l) {
+        if (nums[mid] === 0) res.push([l, mid, r]);
+        if (nums[mid] > 0 && nums[mid - 1] >= 0) {
+          mid--;
+          continue;
+        }
+        if (nums[mid] < 0 && nums[mid + 1] <= 0) {
+          mid++;
+          continue;
+        }
+        break;
+      }
+    }
+  }
+  return res;
 };
+
+
+console.log(threeSum([-1,0,1,2,-1,-4]));
+console.log('正确输出: [[-1,-1,2],[-1,0,1]]')
