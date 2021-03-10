@@ -28,9 +28,11 @@ function getIntersect(minList, maxList) {
 		const c = maxList[j];
 		if (listMap.has(c)) {
 			res.push(c);
-			if (listMap.get(c) === 0) {
+			if (listMap.get(c) === 1) {
 				listMap.delete(c);
-			}
+			} else {
+        listMap.set(c, listMap.get(c) - 1);
+      }
 		}
 		if (listMap.size === 0) {
 			break;
