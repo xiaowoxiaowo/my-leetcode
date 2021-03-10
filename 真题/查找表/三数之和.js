@@ -26,27 +26,27 @@ var threeSum = function(nums) {
   while(l + 1 < r) {
     const sum = nums[l] + nums[r];
     let mid = Math.floor((r - l)/2);
-    const 
+    const ll = l, rr = r;
     if (len - l === r + 1) {
       l++;
     } else {
       r--;
     }
     if (sum > 0) {
-      if (sum + nums[l + 1] > 0) continue;
-      while (mid > l) {
-        if (sum + nums[mid] === 0) res.push([l, mid, r]);
+      if (sum + nums[ll + 1] > 0) continue;
+      while (mid > ll) {
+        if (sum + nums[mid] === 0) res.push([ll, mid, rr]);
         mid--;
       }
     } else if (sum < 0) {
-      if (sum + nums[r - 1] < 0) continue;
-      while (mid < r) {
-        if (sum + nums[mid] === 0) res.push([l, mid, r]);
+      if (sum + nums[rr - 1] < 0) continue;
+      while (mid < rr) {
+        if (sum + nums[mid] === 0) res.push([ll, mid, rr]);
         mid++;
       }
     } else {
-      while (mid < r && mid > l) {
-        if (nums[mid] === 0) res.push([l, mid, r]);
+      while (mid < rr && mid > ll) {
+        if (nums[mid] === 0) res.push([ll, mid, rr]);
         if (nums[mid] > 0 && nums[mid - 1] >= 0) {
           mid--;
           continue;
