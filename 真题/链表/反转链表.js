@@ -14,6 +14,7 @@
  *     this.next = (next===undefined ? null : next)
  * }
  */
+import { createLinkedList, printfLinkedList } from '@/utils';
 
 // 迭代方式
 var reverseList = function(head) {
@@ -40,3 +41,8 @@ var reverseList = function(head) {
 	head.next = null;
 	return newHead;
 };
+
+var test = createLinkedList([1,2,3,4,5]);
+console.log(printfLinkedList(test));
+var newHead = reverseList(test);
+console.log(printfLinkedList(newHead));

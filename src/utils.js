@@ -49,3 +49,26 @@ export function getRangedArray(count, min, max) {
   }
   return arr
 }
+
+// 创建链表
+export const createLinkedList = (arr) => {
+  let head = {}, newArr = arr.slice();
+  if (newArr.length) {
+    head.val = newArr[0];
+    head.next = createLinkedList(newArr.slice(1));
+  } else {
+    return null;
+  }
+  return head;
+};
+
+// 打印链表
+export const printfLinkedList = (head) => {
+  let res = '', cur = head;
+  while(cur !== null) {
+    res = res + cur.val + ' => ';
+    cur = cur.next;
+  }
+  res = res + 'null';
+  return res;
+};

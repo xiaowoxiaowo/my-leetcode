@@ -18,3 +18,9 @@
 var reverseBetween = function(head, left, right) {
 
 };
+
+var test = [1,2,3,4,5];
+
+
+
+console.log(printfLinkedList(createLinkedList(test)));

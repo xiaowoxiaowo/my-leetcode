@@ -11,6 +11,11 @@ module.exports = {
       template: './index.html'
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src/")
+    }
+  },
   mode: 'development',
   // devtool: 'inline-source-map',
   devServer: {
