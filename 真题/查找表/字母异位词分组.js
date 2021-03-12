@@ -18,7 +18,7 @@
  * 
  */
 
-// 排序方法
+// 排序方法 O(nklogk),k是字符串的最大长度
  var groupAnagrams = function(strs) {
   const map = new Map();
   for (let str of strs) {
@@ -32,7 +32,7 @@
   return Array.from(map.values());
 };
 
-// 计数方法
+// 计数方法， O(nk) 空间复杂度有点大，不是很推荐
 var groupAnagrams = function(strs) {
   const map = new Object();
   for (let s of strs) {
@@ -44,9 +44,3 @@ var groupAnagrams = function(strs) {
   }
   return Object.values(map);
 };
-
-
-
-
-console.log(JSON.stringify(groupAnagrams(["eat","tea","tan","ate","nat","bat","ac","bd","aac","bbd","aacc","bbdd","acc","bdd"])));
-console.log('[["bdd"],["bat"],["nat","tan"],["ac"],["ate","eat","tea"],["bd"],["aac"],["bbd"],["aacc"],["bbdd"],["acc"]]');
