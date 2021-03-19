@@ -19,7 +19,8 @@ function moveZeroes(nums) {
 	let j = 0;
 	for (let i = 0; i < len; i++) {
 			if (nums[i]) {
-				swap(nums, j++, i);
+				swap(nums, j, i);
+				j++;
 			}
 	}
 	return nums;
