@@ -1,0 +1,4 @@
+http.proxy = 127.0.0.1:8087
+http.sslVerify = false
+GIT_TRACE_PACKET = false
+GIT_CURL_VERBOSE = false
