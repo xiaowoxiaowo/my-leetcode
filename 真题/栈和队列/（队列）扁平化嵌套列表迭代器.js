@@ -20,18 +20,50 @@
  * 
  * 解题思路：
  * 
+ * 正确的解决思路应该是队列的思路，把传入的数据直接当做一个队列。
  * 
+ * hasNext的时候，判断当前第一个值是否为整数，是返回true，不是即为数组，将数组拍平，替换原来第一位的数据。
+ * next的时候，就直接shift第一个值，获取值即可。
  * 
  */
 
-// 深度优先搜索
+// 队列思路
 var NestedIterator = function (nestedList) {
-  let res = [];
+  // 初始化
+  this.queue = nestedList;
+};
+
+NestedIterator.prototype.hasNext = function () {
+  while (this.queue.length) {
+    // 如果第一位是整数，直接return
+    if (this.queue[0].isInteger()) {
+      return true;
+    } else {
+      // 如果是数组，拍平，然后替换第一个值
+      let cur = this.queue[0].getList();
+      this.queue.splice(0, 1, ...cur);
+    }
+  }
+};
+
+NestedIterator.prototype.next = function () {
+  // 取值
+  return this.queue.shift().getInteger();
+};
+
+
+
+
+
+// 深度优先搜索（递归实现，能够完成相应的功能，但是并不贴合题目中 迭代 这个概念）
+var NestedIterator = function (nestedList) {
+  this.res = [];
+  this.index = 0;
   const dfs = (node) => {
     for(let i = 0; i < node.length; i ++) {
       let cur = node[i];
       if (cur.isInteger()) {
-        res.push(cur.getInteger());
+        this.res.push(cur.getInteger());
       } else {
         dfs(cur.getList());
       }
@@ -41,44 +73,9 @@ var NestedIterator = function (nestedList) {
 };
 
 NestedIterator.prototype.hasNext = function () {
-
+  return this.index < this.res.length;
 };
 
 NestedIterator.prototype.next = function () {
-
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 栈思路
-var NestedIterator = function(nestedList) {
-  this.stack = nestedList;
-};
-
-NestedIterator.prototype.hasNext = function() {
-  while (this.stack.length !== 0) {
-      if (this.stack[0].isInteger()) {
-          return true;
-      } else {
-          let cur = this.stack[0].getList();
-          this.stack.shift();
-          this.stack.unshift(...cur);
-      }
-  }
-};
-
-NestedIterator.prototype.next = function() {
-  return this.stack.shift().getInteger();
+  return this.res[this.index++];
 };
