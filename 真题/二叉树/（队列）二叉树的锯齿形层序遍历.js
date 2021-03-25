@@ -40,6 +40,8 @@
  * 
  * 解题思路：
  * 
+ * 跟 二叉树的层序遍历 思路一致，使用队列进行层序遍历。只需要根据层级，push或者unshift把数字正序或者倒序推入结果数组即可
+ * 
  */
 let val1 = { val: 1 };
 val1.left = { val: 2, left: { val: 4 } };
@@ -48,24 +50,22 @@ val1.right = { val: 3, right: { val: 5 } };
 
 var zigzagLevelOrder = function(root) {
   if (!root) return [];
-	let stack = [], res = [];
-	stack.push({ level: 0, node: root });
-	while(stack.length) {
-    console.log('==============');
-    console.log(JSON.stringify(stack));
-		let { level, node } = stack.shift();
-    let first = (1 - level % 2) ? 'right' : 'left';
-    let secord = (level % 2) ? 'right' : 'left';
-		if (node[first]) stack.push({ level: level + 1, node: node[first] });
-		if (node[secord]) stack.push({ level: level + 1, node: node[secord] });
+	let queue = [], res = [];
+	queue.push({ level: 0, node: root });
+	while(queue.length) {
+		let { level, node } = queue.shift();
+		if (node.left) queue.push({ level: level + 1, node: node.left });
+		if (node.right) queue.push({ level: level + 1, node: node.right });
 
-    console.log(JSON.stringify(stack));
+		// 如果是奇数层级，使用unshift逆序推入数组。
+		// 如果是偶数，使用push正序推入数组
+		let cz = (level % 2) ? 'unshift' : 'push';
+
 		if (level === res.length) {
 			res.push([node.val]);
 		} else {
-			res[level].push(node.val);
+			res[level][cz](node.val);
 		}
-    console.log(JSON.stringify(res));
 	}
 	return res;
 };
