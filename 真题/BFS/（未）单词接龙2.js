@@ -31,5 +31,29 @@
  * 
  */
 var findLadders = function(beginWord, endWord, wordList) {
-
+  if (!wordList.includes(endWord)) return [];
+  let wordsSet = new Set(wordList);
+  let queue = [], res = [], curLevel = 0;
+  queue.push({ arr: [beginWord], level: 1 });
+  while (queue.length) {
+    let { arr, level } = queue.shift();
+    const curStr = arr[arr.length - 1];
+    if (curLevel !== 0 && curLevel < level) return res;
+    if (curStr === endWord) {
+      curLevel = level;
+      res.push(arr);
+    }
+    for (let i = 0; i < curStr.length; i ++) {
+      for (let j = 97; j < 123; j ++) {
+        let newStr = curStr.slice(0, i) + String.fromCharCode(j) + curStr.slice(i);
+        if (wordsSet.has(newStr)) {
+          queue.push({ arr: [...arr, newStr], level: level + 1 });
+          wordsSet.delete(newStr);
+        }
+      }
+    }
+  }
+  return res;
 };
+
+console.log(findLadders("hit", "cog", ["hot","dot","dog","lot","log","cog"]));
