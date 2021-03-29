@@ -26,9 +26,24 @@
  * 树的深度不超过 10
  * 
  * 解题思路：
+ * 递归思路，可以按 二叉树的所有路径 的思路来，将内容加到一个数组中，向上返回的时候，每一层都给数组里unshift一个值。
+ * 然后最终得到一个所有路径的数组，最后将这些路径转为数字。
  * 
+ * 下面的解答是在遍历的过程中直接计算出结果，计算的关键是将一个总和值遍历下去，每层都把这个值*10,然后加上当前节点值，直到叶子节点。
  */
 
 var sumNumbers = function(root) {
-
+  if (!root) return 0;
+  // 遍历
+  const loop = (node, sum) => {
+    // 如果节点不存在，返回0
+    if (!node) return 0;
+    // 向下遍历每一层，都将这个值*10，并加上当前节点值
+    let res = sum * 10 + node.val;
+    // 如果是叶子节点，返回当前值
+    if (!node.left && !node.right) return res;
+    // 如果不是叶子节点，继续遍历左右子节点树
+    return loop(node.left, res) + loop(node.right, res)
+  };
+  return loop(root, 0);
 };
