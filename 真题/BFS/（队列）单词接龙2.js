@@ -28,32 +28,35 @@
  * 
  * 
  * 解题思路：
- * 
+ * 本题例子会超时，只按思路来吧，本题有点难，暂不做深入了。单词接龙 的思路，把路径作为数组传入队列中，
+ * 然后通过队列运用BFS思路。
  */
 var findLadders = function(beginWord, endWord, wordList) {
   if (!wordList.includes(endWord)) return [];
   let wordsSet = new Set(wordList);
+  wordsSet.delete(beginWord);
   let queue = [], res = [], curLevel = 0;
-  queue.push({ arr: [beginWord], level: 1 });
+  queue.push({ arr: [beginWord], level: 1, visited: [], pos: -1 });
   while (queue.length) {
-    let { arr, level } = queue.shift();
-    const curStr = arr[arr.length - 1];
+    let { arr, level, visited, pos } = queue.shift();
+    let curStr = arr[arr.length - 1];
+    // 当level大于之前得到结果的level，返回结果
     if (curLevel !== 0 && curLevel < level) return res;
     if (curStr === endWord) {
       curLevel = level;
       res.push(arr);
     }
     for (let i = 0; i < curStr.length; i ++) {
-      for (let j = 97; j < 123; j ++) {
-        let newStr = curStr.slice(0, i) + String.fromCharCode(j) + curStr.slice(i);
-        if (wordsSet.has(newStr)) {
-          queue.push({ arr: [...arr, newStr], level: level + 1 });
-          wordsSet.delete(newStr);
+      // 优化点，避免重复修改同一位置的单词
+      if (i !== pos) {
+        for (let j = 97; j < 123; j ++) {
+          let newStr = curStr.slice(0, i) + String.fromCharCode(j) + curStr.slice(i + 1);
+          if (wordsSet.has(newStr) && !visited.includes(newStr)) {
+            queue.push({ arr: [...arr, newStr], level: level + 1, visited: [...visited, newStr], pos: i });
+          }
         }
       }
     }
   }
   return res;
 };
-
-console.log(findLadders("hit", "cog", ["hot","dot","dog","lot","log","cog"]));
