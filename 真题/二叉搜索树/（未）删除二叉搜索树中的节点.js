@@ -38,6 +38,42 @@
  * 解题思路：
  */
 
+var findNode = function(root, key) {
+  if (!root) return [];
+  if (root.val === key) return [root];
+  let left = findNode(root.left, key);
+  let right = findNode(root.right, key);
+  if (left) return [left, root, 'l'];
+  if (right) return [right, root, 'r'];
+  return [];
+}
+
 var deleteNode = function(root, key) {
-    
+  let [tarNode, parNode, direct] = findNode(root, key);
+  if (!tarNode) return root;
+  if (!tarNode.left && !tarNode.right) {
+    if (parNode) {
+      parNode[direct] = null;
+      return root;
+    } else {
+      return null;
+    }
+  } 
+  const loop = (node) => {
+    if (!node) return null;
+    if (!node.right) {
+      // Object.assign(target, target.left);
+      const { val, left, right } = node.left;
+      node.val = val;
+      node.left = left;
+      node.right = right;
+      return node;
+    } else {
+      const { val, right } = node.right;
+      node.val = val;
+      node.right = loop(right);
+    }
+  }
+  loop(tarNode);
+  return root;
 };
