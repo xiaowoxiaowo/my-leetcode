@@ -31,5 +31,8 @@
  * 
  */
 var restoreIpAddresses = function(s) {
-
+  let len = s.length;
+  if (len <= 3) return [];
+  if (len === 4) return [...s];
+  if (len > 12) return [];
 };
