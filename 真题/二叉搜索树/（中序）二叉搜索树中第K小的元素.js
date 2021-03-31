@@ -17,5 +17,18 @@
  */
 
 var kthSmallest = function(root, k) {
-
+  if (!root) return -1;
+  let stack = [], count = 1;
+  stack.push({ type: 'node', node: root });
+  while(stack.length) {
+    let { type, node } = stack.pop();
+    if (!node) continue;
+    if (type === 'res' && count++ === k) return node.val;
+    if (type === 'node') {
+      stack.push({ type: 'node', node: node.right });
+      stack.push({ type: 'res', node: node });
+      stack.push({ type: 'node', node: node.left });
+    }
+  }
+  return -1;
 };
