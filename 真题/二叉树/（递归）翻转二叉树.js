@@ -24,6 +24,7 @@
  * 
  * 
  */
+
 var invertTree = function(root) {
 	if (!root) return root;
 	invertTree(root.left);
