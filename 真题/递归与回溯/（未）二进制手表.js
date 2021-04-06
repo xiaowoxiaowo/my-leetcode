@@ -19,5 +19,6 @@
  */
 
 var readBinaryWatch = function(num) {
-
+  const hours = [1,2,4,8];
+  const minutes = [1,2,4,8,16,32];
 };
