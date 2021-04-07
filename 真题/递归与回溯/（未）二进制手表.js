@@ -19,6 +19,77 @@
  */
 
 var readBinaryWatch = function(num) {
+  if (num === 0) return ["0:00"];
   const hours = [1,2,4,8];
   const minutes = [1,2,4,8,16,32];
+  let res = [];
+  const loop = (hNum, mNum) => {
+    for (let i = 1; i <= hNum; i ++) {
+
+    }
+  };
+  for (let i = 1; i <= num; i ++) {
+    for (let x = i; x <= 4; x ++) {
+      for (let y = num - x; y <= 6; y ++) {
+        loop(x, y);
+      }
+    }
+  }
+  return res;
+};
+
+
+var readBinaryWatch = function(num) {
+  const arr = [1, 2, 4, 8, 1, 2, 4, 8, 16, 32];
+  const result = [];
+  backTrace(arr, num, 0, [0, 0], result);
+  return result;
+};
+
+var backTrace = function(arr, num, start, temp, result) {
+  if (temp[0] >= 12 || temp[1] >= 60) return
+  if (num === 0) {
+    result.push(`${temp[0]}:${padding(temp[1])}`)
+    return
+  }
+
+  for (let i = start; i < arr.length; i++) {
+    if (i <= 3) {
+      temp[0] = temp[0] + arr[i]
+    } else {
+      temp[1] = temp[1] + arr[i]
+    }
+    num = num - 1
+    backTrace(arr, num, i + 1, temp, result)
+    if (i <= 3) {
+      temp[0] = temp[0] - arr[i]
+    } else {
+      temp[1] = temp[1] - arr[i]
+    }
+    num = num + 1
+  }
+}
+
+var padding = function(num) {
+  return num < 10 ? `0${num}` : num
+}
+
+
+
+var readBinaryWatch = function (num) {
+  const timeList = [];
+  function dfs(time, n, index) {
+      const hour = time >> 6, minute = time & 0b111111;
+      if (hour > 11 || minute > 59) return;
+      if (n === 0) {
+          timeList.push(`${hour}:${minute < 10 ? "0" + minute : minute}`);
+          return;
+      }
+      const end = 10 - n;
+      while (index <= end) {
+          dfs(time | (1 << index), n - 1, ++index);
+      }
+  }
+  dfs(0, num, 0);
+  return timeList;
 };
