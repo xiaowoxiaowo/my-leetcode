@@ -63,7 +63,7 @@ var exist = function(board, word) {
 		visited[startX][startY] = false;
 	};
   // 双重循环，遍历二维网格中的所有节点
-	for (let i = 0; i < board.length; i ++) {
+	for (let i = 0; i < board.length; i ++) { 
 		for (let j = 0; j < board[i].length; j ++) {
 			// 调用递归主函数
 			if (searchWord(0, i, j)) return true;
