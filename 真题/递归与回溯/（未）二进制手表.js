@@ -15,81 +15,39 @@
  * 超过表示范围（小时 0-11，分钟 0-59）的数据将会被舍弃，也就是说不会出现 "13:00", "0:61" 等时间。
  * 
  * 解题思路：
- * 
+ * 本题的难点在于，需要把实际的例子，转化为组合排列问题。手表有小时以及分钟两个时间，每个亮着的灯其实可以等效于一个固定的值。
+ * 小时灯的数值为[1,2,4,8],分钟灯的数值为[1,2,4,8,16,32]。
+ * 可以把这两个数组和为一个数组[1, 2, 4, 8, 1, 2, 4, 8, 16, 32]。
+ * 本题就可以抽象为在当前的数组中，存在n（LED亮着的数量）个值，返回所有的可能性。
  */
-
 var readBinaryWatch = function(num) {
-  if (num === 0) return ["0:00"];
-  const hours = [1,2,4,8];
-  const minutes = [1,2,4,8,16,32];
-  let res = [];
-  const loop = (hNum, mNum) => {
-    for (let i = 1; i <= hNum; i ++) {
-
-    }
-  };
-  for (let i = 1; i <= num; i ++) {
-    for (let x = i; x <= 4; x ++) {
-      for (let y = num - x; y <= 6; y ++) {
-        loop(x, y);
-      }
-    }
-  }
-  return res;
-};
-
-
-var readBinaryWatch = function(num) {
+  // 抽象出来的数组
   const arr = [1, 2, 4, 8, 1, 2, 4, 8, 16, 32];
   const result = [];
-  backTrace(arr, num, 0, [0, 0], result);
+  // 递归方法，传入四个参数，arr数组，num（LED亮着的数量）,start（每次递归循环的起始位置），temp(一个有两个值的数组，代表小时以及分钟值)
+  const loop = (arr, num, start, temp) => {
+    // 边界情况，小时范围 0-11，分钟范围 0-59
+    if (temp[0] >= 12 || temp[1] >= 60) return;
+    // 当递归到底的时候，把结果推入result数组中
+    if (num === 0) return result.push(`${temp[0]}:${padding(temp[1])}`);
+    // 按照传入的start值，从小到大循环
+    for (let i = start; i < arr.length; i++) {
+      const tmp = [...temp];
+      if (i <= 3) {
+        // 如果处理的是数组的前4位，把值加到小时位上
+        tmp[0] = tmp[0] + arr[i];
+      } else {
+        // 如果处理的是数组的后面的值，把值加到分钟位上
+        tmp[1] = tmp[1] + arr[i];
+      }
+      // 继续递归
+      loop(arr, num - 1, i + 1, tmp)
+    }
+  }
+  loop(arr, num, 0, [0, 0]);
   return result;
 };
 
-var backTrace = function(arr, num, start, temp, result) {
-  if (temp[0] >= 12 || temp[1] >= 60) return
-  if (num === 0) {
-    result.push(`${temp[0]}:${padding(temp[1])}`)
-    return
-  }
-
-  for (let i = start; i < arr.length; i++) {
-    if (i <= 3) {
-      temp[0] = temp[0] + arr[i]
-    } else {
-      temp[1] = temp[1] + arr[i]
-    }
-    num = num - 1
-    backTrace(arr, num, i + 1, temp, result)
-    if (i <= 3) {
-      temp[0] = temp[0] - arr[i]
-    } else {
-      temp[1] = temp[1] - arr[i]
-    }
-    num = num + 1
-  }
-}
-
 var padding = function(num) {
-  return num < 10 ? `0${num}` : num
+  return num < 10 ? `0${num}` : num;
 }
-
-
-
-var readBinaryWatch = function (num) {
-  const timeList = [];
-  function dfs(time, n, index) {
-      const hour = time >> 6, minute = time & 0b111111;
-      if (hour > 11 || minute > 59) return;
-      if (n === 0) {
-          timeList.push(`${hour}:${minute < 10 ? "0" + minute : minute}`);
-          return;
-      }
-      const end = 10 - n;
-      while (index <= end) {
-          dfs(time | (1 << index), n - 1, ++index);
-      }
-  }
-  dfs(0, num, 0);
-  return timeList;
-};
