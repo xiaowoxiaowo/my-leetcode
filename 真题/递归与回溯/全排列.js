@@ -38,3 +38,21 @@ var permute = function(nums) {
 	loop(nums, []);
 	return res;
 };
+
+const permute = (nums) => {
+  const res = [];
+  const used = {};
+
+  function dfs(path) {
+    if (path.length == nums.length) return res.push(path.slice()); 
+    for (const num of nums) {
+      if (used[num]) continue;       
+      used[num] = true;
+      dfs([...path, num]);                   
+      used[num] = false;     
+    }
+  }
+
+  dfs([]);
+  return res;
+};
