@@ -6,6 +6,12 @@
 	<title>一起来解数独</title>
 </head>
 <style>
+	.sudoku_box {
+		width: 600px;
+		height: 450px;
+		margin: 0 auto;
+		margin-top: 20px;
+	}
 	.content {
 		display: inline-block;
 		width: 450px;
@@ -74,37 +80,31 @@
 		border: 1px solid rgb(22, 22, 102);
 	}
 </style>
+<script src="./sudokuData.js"></script>
 <body>
-	<div class="content"></div>
-	<div class="config_box">
-		<button id="restart">重新开始</button>
-		<button id="reset">重置</button>
-		<div class="num" id="1">1</div>
-		<div class="num" id="2">2</div>
-		<div class="num" id="3">3</div>
-		<div class="num" id="4">4</div>
-		<div class="num" id="5">5</div>
-		<div class="num" id="6">6</div>
-		<div class="num" id="7">7</div>
-		<div class="num" id="8">8</div>
-		<div class="num" id="9">9</div>
-		<button id="clear">清除单个</button>
-		<button id="confirm">提交</button>
+	<div class="sudoku_box">
+		<div class="content"></div>
+		<div class="config_box">
+			<button id="restart">换一套题</button>
+			<button id="reset">重置</button>
+			<div class="num" id="1">1</div>
+			<div class="num" id="2">2</div>
+			<div class="num" id="3">3</div>
+			<div class="num" id="4">4</div>
+			<div class="num" id="5">5</div>
+			<div class="num" id="6">6</div>
+			<div class="num" id="7">7</div>
+			<div class="num" id="8">8</div>
+			<div class="num" id="9">9</div>
+			<button id="clear">清除单个</button>
+			<button id="confirm">提交</button>
+		</div>
 	</div>
 <script>
 	// dom元素初始化
 	var preActive = '';
-	var curData = [
-		["5","3",".",".","7",".",".",".","."],
-		["6",".",".","1","9","5",".",".","."],
-		[".","9","8",".",".",".",".","6","."],
-		["8",".",".",".","6",".",".",".","3"],
-		["4",".",".","8",".","3",".",".","1"],
-		["7",".",".",".","2",".",".",".","6"],
-		[".","6",".",".",".",".","2","8","."],
-		[".",".",".","4","1","9",".",".","5"],
-		[".",".",".",".","8",".",".","7","9"]
-	];
+	var curData = [];
+	var curIndex = -1;
 	function tempInit() {
 		var temp = '';
 		for (var i = 0; i < 9; i ++) {
@@ -154,22 +154,16 @@
 			}
 		}
 	}
-	function createRandArr () {
-		let t = 0;
-		let x, y, num, arr = [];
-		for (let i = 0; i < 9; i ++) {
-			arr[i] = new Array(9).fill('.');
-		}
-		while(t < 33){
-			x = Math.floor(Math.random() * 9);
-			y = Math.floor(Math.random() * 9);
-			num = Math.floor(Math.random() * 9) + 1;
-			arr[x][y] = String(num);
-			t++;
-		}
-		return arr;
-	}
+	// 数独数据初始化，从sudokuList中随机抽取一个
 	function createSudoku () {
+		let len = sudokuList.length;
+		let index = Math.floor(Math.random() * len);
+		while (curIndex === index) {
+			index = Math.floor(Math.random() * len);
+		}
+		curIndex = index;
+		curData = sudokuList[index];
+		setData();
 	}
 	// 递归回溯法解数独
 	function solveSudoku(board) {
@@ -207,6 +201,7 @@
 				if (val !== '.') toggleCache(i, j, val, 'add');
 			}
 		}
+		let res = [];
 		// 递归方法
 		const dfs = (xIndex, yIndex) => {
 			// 当x轴递归到9时，结束递归。
@@ -237,16 +232,26 @@
 		dfs(0, 0);
 		return board;
 	};
+	function check() {
+		const res = getValArr();
+		const correctRes = solveSudoku(JSON.parse(JSON.stringify(curData)));
+		if(JSON.stringify(res) === JSON.stringify(correctRes)) {
+			alert('恭喜你，回答正确！');
+		} else {
+			alert('不要意思，回答错误，请修改之后再提交！');
+		}
+	}
 	// 右侧操作栏的点击事件
 	function configInit() {
 		document.querySelector('.config_box').addEventListener('click', function(e) {
 			var type = e.target.id;
 			if (!type) return;
 			if (type === 'restart') {
+				createSudoku();
 			} else if (type === "reset") {
 				setData();
 			} else if (type === "confirm") {
-				console.log(getValArr());
+				check();
 			} else if (type === "clear") {
 				if (preActive) preActive.innerText = '';
 			} else {
@@ -256,11 +261,7 @@
 	}
 	tempInit();
 	configInit();
-	// setData();
-	curData = createRandArr();
-	setData();
-	// console.log(solveSudoku(curData));
-	// console.log(curData);
+	createSudoku();
 	
 </script>
 </body>
