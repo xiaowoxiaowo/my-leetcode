@@ -19,6 +19,14 @@
  * 输出：6
  * 
  * 解题思路：
+ * 如果使用递归，会有很多重复的计算，所以应该使用动态规划的思路。这里的解题思路也需要一定的数学思想。
+ * 比如一个3X3的二维数组，初始化可以设为如下
+ * 1 1 1
+ * 1 0 0
+ * 1 0 0
+ * 我们需要求从左上角到右下角的路线条数，x为0的节点，或者y为0的节点，相应的路线条数都可以设为1。
+ * 因为只能右或下，其实这里的每一个点的路线条数，就是上节点加左节点的值。
+ * 遍历这些节点，每个节点都赋值上节点加左节点的值，直到求出最右下角的节点值，就是我们需要求的解
  */
 var uniquePaths = function(m, n) {
   let path = [];
@@ -30,50 +38,10 @@ var uniquePaths = function(m, n) {
       path[i][0] = 1;
     }
   }
-  for (let i = 2; i < m; i ++) {
-    for(let j = 2; j < n; j ++) {
+  for (let i = 1; i < m; i ++) {
+    for(let j = 1; j < n; j ++) {
       path[i][j] = path[i - 1][j] + path[i][j - 1];
     }
-  }
+	}
   return path[m - 1][n - 1];
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var uniquePaths = function(m, n) {
-//   const f = new Array(m).fill(0).map(() => new Array(n).fill(0));
-//   for (let i = 0; i < m; i++) {
-//       f[i][0] = 1;
-//   }
-//   for (let j = 0; j < n; j++) {
-//       f[0][j] = 1;
-//   }
-//   for (let i = 1; i < m; i++) {
-//       for (let j = 1; j < n; j++) {
-//           f[i][j] = f[i - 1][j] + f[i][j - 1];
-//       }
-//   }
-//   return f[m - 1][n - 1];
-// };
-
-
-// var uniquePaths = function(m, n) {
-//   let ans = 1;
-//   for (let x = n, y = 1; y < m; ++x, ++y) {
-//       ans = Math.floor(ans * x / y);
-//   }
-//   return ans;
-// };
