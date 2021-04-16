@@ -25,7 +25,21 @@
  * triangle[i].length == triangle[i - 1].length + 1
  * 
  * 解题思路：
+ * 动态规划思路，其实从上到下或者从下到上都可以，推荐从下到上，可以少一个计算数组最小值的操作
  */
 var minimumTotal = function(triangle) {
-
+  let h = triangle.length;
+  if (h === 1) return triangle[0][0];
+  // 从倒数第二行开始遍历
+  for (let i = h - 2; i >= 0; i --) {
+    for (let j = 0; j < triangle[i].length; j ++) {
+      // 遍历节点，从下左侧节点和下右侧节点中取较小的那个值，计算到当前节点
+      triangle[i][j] = triangle[i][j] + Math.min(triangle[i + 1][j], triangle[i + 1][j + 1]);
+    }
+  }
+  return triangle[0][0];
 };
+
+
+console.log(minimumTotal([[2],[3,4],[6,5,7],[4,1,8,3]]));
+console.log(minimumTotal([[-10]]));
