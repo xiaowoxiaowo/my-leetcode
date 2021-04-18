@@ -32,5 +32,70 @@
  * 解题思路：
  */
 var numDecodings = function(s) {
+  const len = s.length;
+  if (s[0] === '0') return 0;
+  if (len === 1) return 1;
+  if (s[len - 1] === '0' && s[len - 2] === '0') return 0;
 
+  let memo = [], isZero = true;
+  memo[len - 1] = 0;
+  if (s[len - 1] !== '0') {
+    memo[len - 1] = 1;
+    isZero = false;
+  }
+
+  for (let i = len - 2; i >= 0; i --) {
+    if (s[i] === '0' && isZero) return 0;
+    if (s[i] === '0') {
+      memo[i] = memo[i + 1];
+      isZero = true;
+      continue;
+    }
+    if (Number(s.slice(i, i + 2)) <= 26) {
+      if (isZero) {
+        if (i === 0 && memo[i + 1] === 0) return 1;
+        isZero = false;
+        if (i !== 0 && s[i - 1] !== '0') {
+          memo[i - 1] = memo[i + 1];
+          i--;
+        }
+        continue;
+      }
+      memo[i] = memo[i + 1] + 1;
+    } else {
+      if (isZero) return 0;
+      memo[i] = memo[i + 1];
+    }
+  }
+  return memo[0];
+};
+
+// console.log(numDecodings('10'));
+// console.log(numDecodings('100'));
+// console.log(numDecodings('226'));
+// console.log(numDecodings('12'));
+// console.log(numDecodings("2101"));
+console.log(numDecodings('1123'));
+
+
+var numDecodings = function(s) {
+  if(s[0] == "0") return 0;
+  let dp = [1, 1], len = s.length;
+  for(let i=1; i < len; ++i) {
+    if(s[i - 1] != "0") {
+      let num = (s[i - 1] + s[i] | 0);
+      if(num >= 1 && num <= 26) {
+        dp[i + 1] = s[i] != "0"? dp[i - 1] + dp[i]: dp[i - 1];
+      } else if(s[i] != "0") {
+        dp[i + 1] = dp[i];
+      } else {
+        return 0;
+      }
+    } else if(s[i] != "0") {
+      dp[i + 1] = dp[i];
+    } else {
+      return 0;
+    }
+  }
+  return dp[len];
 };
