@@ -30,59 +30,14 @@
  * 输出：0
  * 
  * 解题思路：
+ * 本题是一道斐波那契数列的复杂题，重点在于各种边界条件的处理
  */
 var numDecodings = function(s) {
-  const len = s.length;
-  if (s[0] === '0') return 0;
-  if (len === 1) return 1;
-  if (s[len - 1] === '0' && s[len - 2] === '0') return 0;
-
-  let memo = [], isZero = true;
-  memo[len - 1] = 0;
-  if (s[len - 1] !== '0') {
-    memo[len - 1] = 1;
-    isZero = false;
-  }
-
-  for (let i = len - 2; i >= 0; i --) {
-    if (s[i] === '0' && isZero) return 0;
-    if (s[i] === '0') {
-      memo[i] = memo[i + 1];
-      isZero = true;
-      continue;
-    }
-    if (Number(s.slice(i, i + 2)) <= 26) {
-      if (isZero) {
-        if (i === 0 && memo[i + 1] === 0) return 1;
-        isZero = false;
-        if (i !== 0 && s[i - 1] !== '0') {
-          memo[i - 1] = memo[i + 1];
-          i--;
-        }
-        continue;
-      }
-      memo[i] = memo[i + 1] + 1;
-    } else {
-      if (isZero) return 0;
-      memo[i] = memo[i + 1];
-    }
-  }
-  return memo[0];
-};
-
-// console.log(numDecodings('10'));
-// console.log(numDecodings('100'));
-// console.log(numDecodings('226'));
-// console.log(numDecodings('12'));
-// console.log(numDecodings("2101"));
-console.log(numDecodings('1123'));
-
-
-var numDecodings = function(s) {
-  if(s[0] == "0") return 0;
+  if(s[0] === '0') return 0;
+  // dp里的数据，第i个点，代表s中[0, i - 1]的字符串的解码方法数
   let dp = [1, 1], len = s.length;
-  for(let i=1; i < len; ++i) {
-    if(s[i - 1] != "0") {
+  for(let i = 1; i < len; i ++) {
+    if(s[i - 1] !== '0') {
       let num = (s[i - 1] + s[i] | 0);
       if(num >= 1 && num <= 26) {
         dp[i + 1] = s[i] != "0"? dp[i - 1] + dp[i]: dp[i - 1];
@@ -99,3 +54,10 @@ var numDecodings = function(s) {
   }
   return dp[len];
 };
+
+// console.log(numDecodings('10'));
+// console.log(numDecodings('100'));
+// console.log(numDecodings('226'));
+// console.log(numDecodings('12'));
+// console.log(numDecodings("2101"));
+console.log(numDecodings('1123'));
