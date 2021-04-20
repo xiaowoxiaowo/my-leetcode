@@ -20,27 +20,32 @@
  * 输出：0
  * 
  * 解题思路：
- * 
+ * 动态规划的思路，本题相比于 打家劫舍 多了一个首尾连续的条件。
+ * 选了头就不能选尾，选了尾就不能选头
+ * 所以其实可以将[0, len - 1]的数组和[1, len]的数组，分开进行动态规划，然后取其中的较大值即可
  */
-const robDp = (nums, start, end) => {
-  let len = end - start;
+
+// 动态规划方法
+const robDp = (nums) => {
+	let len = nums.length;
+	if (len === 1) return nums[0];
   let dp = new Array(len).fill(-1);
-  dp[end] = nums[end];
-  for (let i = end - 1; i >= start; i --) {
-    for (let j = i; j < end; j ++) {
+  dp[len - 1] = nums[len - 1];
+  for (let i = len - 2; i >= 0; i --) {
+    for (let j = i; j < len; j ++) {
       const nextVal = (j + 2 >= len) ? 0 : dp[j + 2];
       dp[i] = Math.max(dp[i], nums[j] + nextVal);
     }
-  }
-  return dp;
+	}
+  return dp[0];
 };
 
 var rob = function(nums) {
   let len = nums.length;
   if (len === 0) return 0;
-  if (len === 1) return nums[0];
-  console.log(robDp(nums, 0, len - 1));
-  // return Math.max(robDp(nums, 0, len - 1), robDp(nums, 1, len));
+	if (len === 1) return nums[0];
+	// 将[0, len - 1]的数组和[1, len]的数组，分开进行动态规划，取其中较大值
+  return Math.max(robDp(nums.slice(0, len - 1)), robDp(nums.slice(1, len)));
 };
 
-console.log(rob([1,3,1,3,100]));
+console.log(rob([1,2,3,1]));
