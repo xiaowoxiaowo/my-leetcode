@@ -22,6 +22,25 @@
  * 解题思路：
  * 
  */
-var rob = function(nums) {
-
+const robDp = (nums, start, end) => {
+  let len = end - start;
+  let dp = new Array(len).fill(-1);
+  dp[end] = nums[end];
+  for (let i = end - 1; i >= start; i --) {
+    for (let j = i; j < end; j ++) {
+      const nextVal = (j + 2 >= len) ? 0 : dp[j + 2];
+      dp[i] = Math.max(dp[i], nums[j] + nextVal);
+    }
+  }
+  return dp;
 };
+
+var rob = function(nums) {
+  let len = nums.length;
+  if (len === 0) return 0;
+  if (len === 1) return nums[0];
+  console.log(robDp(nums, 0, len - 1));
+  // return Math.max(robDp(nums, 0, len - 1), robDp(nums, 1, len));
+};
+
+console.log(rob([1,3,1,3,100]));
