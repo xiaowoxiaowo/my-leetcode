@@ -11,9 +11,29 @@
  * 输出：3
  * 解释：对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
  * 
+ * 输入：[1,2,3,15,70]
+ * 输出：69
+ * 
+ * 输入：[1,2,5,3,2,30]
+ * 输出：32
+ * 
  * 
  * 解题思路：
  */
 var maxProfit = function(prices) {
-
+  let len = prices.length;
+  if (len <= 1) return 0;
+  let dp = new Array(len).fill(0), res = 0;
+  for (let i = 1; i < len; i ++) {
+    for (let j = i - 1; j >= 0; j --) {
+      const preVal = (j >= 3) ? dp[j - 2] : 0;
+      dp[i] = Math.max(dp[i], prices[i] - prices[j] + preVal);
+    }
+    res = Math.max(res, dp[i]);
+  }
+  return res;
 };
+
+console.log(maxProfit([1,2,3,0,2]));
+console.log(maxProfit([1,2,3,15,70]));
+console.log(maxProfit([1,2,5,3,2,30]));
