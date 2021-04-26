@@ -25,8 +25,59 @@
  * 进阶:
  * 你能否用 O(n) 时间复杂度完成此题?
  * 
- * 解题思路：
+ * 初始动态规划解题思路：
+ * 
+ * dp[i]代表nums[0...i]这个以i为尾节点的区间内的最大摆动序列长度
+ * s[i]代表nums[0...i]这个以i为尾节点的区间，上一个摆动差是正还是负(唯一)
+ * 
+ * 每个i的值都需要遍历[j...1]
+ * (nums[i] - nums[j]) * s[j] < 0
+ * dp[i] = max(dp[i], 1 + dp[j])
+ * s[i] = nums[i] - nums[j];
+ * 
  */
-var wiggleMaxLength = function(nums) {
+// var wiggleMaxLength = function(nums) {
+//   const len = nums.length;
+//   if (len < 2) return len;
+//   if (len === 2 && nums[0] === nums[1]) return 1;
+//   const dp = new Array(len).fill(1);
+//   const s = new Array(len).fill(0);
+//   let res = 1;
+//   dp[1] = 2;
+//   s[1] = Math.sign(nums[1] - nums[0]);
+//   for (let i = 2; i < len; i ++) {
+//     for (let j = i - 1; j >= 1; j --) {
+//       const curStatus = Math.sign(nums[i] - nums[j]);
+//       const curVal = 1 + dp[j];
+//       if (s[j] === 0 && curStatus !== 0 && curVal > dp[i]) {
+//         dp[i] = curVal - (j === 1) ? 1 : 0;
+//         s[i] = curStatus;
+        
+//       }
+//       if (curStatus * s[j] < 0 && curVal > dp[i]) {
+//         dp[i] = curVal;
+//         s[i] = curStatus;
+//       }
+//     }
+//     res = Math.max(res, dp[i]);
+//   }
+//   return res;
+// };
 
+// 贪心
+var wiggleMaxLength = function(nums) {
+  const n = nums.length;
+  if (n < 2) {
+    return n;
+  }
+  let prevdiff = nums[1] - nums[0];
+  let ret = prevdiff !== 0 ? 2 : 1;
+  for (let i = 2; i < n; i++) {
+    const diff = nums[i] - nums[i - 1];
+    if ((diff > 0 && prevdiff <= 0) || (diff < 0 && prevdiff >= 0)) {
+      ret++;
+      prevdiff = diff;
+    }
+  }
+  return ret;
 };
