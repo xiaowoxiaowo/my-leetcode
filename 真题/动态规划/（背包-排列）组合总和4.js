@@ -22,6 +22,18 @@
  * 解题思路：
  * 
  */
-var combinationSum4 = function(nums, target) {
-
+// 因为顺序不同的序列可以被视作不同的的组合，而且每个元素可以被重复使用
+// 所以我们可以套用target放在外循环，将nums放在内循环的方法
+// 然后配合组合问题的一般公式dp[i] += dp[i-num]得到结果
+ var combinationSum4 = function(nums, target) {
+  const dp = new Array(target + 1).fill(0);
+  dp[0] = 1;
+  for (let i = 1; i <= target; i++) {
+    for (const num of nums) {
+      if (num <= i) {
+        dp[i] += dp[i - num];
+      }
+    }
+  }
+  return dp[target];
 };
