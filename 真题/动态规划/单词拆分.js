@@ -19,7 +19,24 @@
  * 
  * 解题思路：
  * 
+ * dp[i] = dp[i - x] || (str[i - x, i] in wordDict)
  */
-var wordBreak = function(s, wordDict) {
-
+const wordBreak = (s, wordDict) => {
+  const wordList = new Set(wordDict);
+  const len = s.length;
+  const dp = new Array(len + 1).fill(false);
+  // 初始化0为true，便于后续数据处理
+  dp[0] = true;
+  for (let i = 1; i <= len; i ++) {
+    for (let j = i - 1; j >= 0; j --) {
+      // 从右边开始截取[1位，2位, 3位，。。。全部]的字符串
+      const nextStr = s.slice(j, i);
+      if (wordList.has(nextStr) && dp[j]) {
+        // 当截取的字符串和剩余字符串都存在于字典中，设当前字符串为true
+        dp[i] = true;
+        break;
+      }
+    }
+  }
+  return dp[len];
 };
