@@ -18,14 +18,14 @@
  * 
  * 1.如果是0-1背包，即数组中的元素不可重复使用，nums放在外循环，target在内循环，且内循环倒序；
  * for (let i of nums) {
- *  for (let j = i - 1; j >= 0; j --) {
+ *  for (let j = target; j >= nums[i]; j --) {
  *    ....
  *  }
  * }
  * 
  * 2.如果是完全背包，即数组中的元素可重复使用，nums放在外循环，target在内循环。且内循环正序。
  * for (let i of nums) {
- *  for (let j = 1; j <= target; j ++) {
+ *  for (let j of target) {
  *    ....
  *  }
  * }
