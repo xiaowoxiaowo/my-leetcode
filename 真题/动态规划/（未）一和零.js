@@ -17,7 +17,35 @@
  * 
  * 解题思路：
  * 
+ * dp[i] = Math.max(dp[i], dp[i - strs])
+ * 
+ * for(let i of strs) {
+ *  
+ * }
  */
-var findMaxForm = function(strs, m, n) {
+const getZeroAndOne = (str) => {
+  let zeroNum = 0, oneNum = 0;
+  for (let i = 0; i < str.length; i ++) {
+    if (str[i] === '0') {
+      zeroNum ++;
+    } else {
+      oneNum ++;
+    }
+  }
+  return [zeroNum, oneNum];
+};
 
+var findMaxForm = function(strs, m, n) {
+  const len = strs.length;
+  if (!m && !n) return 0;
+  const dp = new Array(len + 1).fill(0);
+  for (let i = 1; i <= n; i ++) {
+    let sum = 0;
+    for (let n = 0; n < len; n ++) {
+      const r = getZeroAndOne(strs[n]);
+      if (r[1] <= i && r[0] === 0) sum ++;
+    }
+    dp[0][i] = sum;
+  }
+  for (let i = 0)
 };
