@@ -47,5 +47,5 @@ var findMaxForm = function(strs, m, n) {
     }
     dp[0][i] = sum;
   }
-  for (let i = 0)
+  for (let i = 0) d
 };
