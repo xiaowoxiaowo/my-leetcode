@@ -16,28 +16,6 @@
  */
 import { swap, pritnf } from '../../src/utils';
 
-// var merge = function(nums1, m, nums2, n) {
-// 	if (n === 0) return nums1;
-// 	const newNums1 = nums1.slice();
-// 	let l = 0;
-// 	let r = 0;
-// 	for (let i = 0; i < m + n; i ++) {
-// 		if (l >= m) {
-// 			nums1[i] = nums2[r];
-// 			r++;
-// 		} else if (r >= n) {
-// 			nums1[i] = newNums1[l];
-// 			l++;
-// 		} else if (newNums1[l] > nums2[r]) {
-// 			nums1[i] = nums2[r];
-// 			r++;
-// 		} else {
-// 			nums1[i] = newNums1[l];
-// 			l++;
-// 		}
-// 	}
-// };
-
 // 从后往前遍历，可以减少命名空间的内存占用
 var merge = function(nums1, m, nums2, n) {
 	if (n === 0) return nums1;

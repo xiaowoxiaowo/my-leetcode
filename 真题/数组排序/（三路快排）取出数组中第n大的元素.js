@@ -39,7 +39,7 @@ function quickSort3Way(nums, l, r, k, len) {
       i++;
     }
   }
-  swap(nums, l , lt);
+  swap(nums, l, lt);
   // 用快排的标准位跟len - k（要查询元素在排序完成之后应该在的位置）做比较来判断，向左或者向右查询
   if (len - k >= gt) {
     return quickSort3Way(nums, gt, len - 1, k, len);
