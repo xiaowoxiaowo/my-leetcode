@@ -15,19 +15,19 @@
 // c是背包的容量
 // 本例优化了空间复杂度，把二维数组优化成了一个一维数组
 const knapsack01 = (w, v, c) => {
-	let len = w.length;
-	if (len === 0) return 0;
-	let memo = new Array(c + 1).fill(0);
-	for (let i = 0; i <= c; i ++) {
-		if (i >= w[0]) memo[i] = v[0];
-	}
+    let len = w.length;
+    if (len === 0) return 0;
+    let memo = new Array(c + 1).fill(0);
+    for (let i = 0; i <= c; i ++) {
+        if (i >= w[0]) memo[i] = v[0];
+    }
 
-	for (let i = 1; i < len; i ++) {
-		for (let j = c; j >= w[i]; j --) {
-			memo[j] = Math.max(memo[j], v[i] + memo[j - w[i]]);
-		}
-	}
-	return memo[c];
+    for (let i = 1; i < len; i ++) {
+        for (let j = c; j >= w[i]; j --) {
+            memo[j] = Math.max(memo[j], v[i] + memo[j - w[i]]);
+        }
+    }
+    return memo[c];
 }
 ```
 举个例子来说明一下这段代码的逻辑：
@@ -83,26 +83,196 @@ y轴长度为背包容量 + 1，便于后续计算
 ### 循环逻辑
 #### 类0-1背包问题
 `nums`中的数据只能使用一次，不需要顺序关系，它的循环逻辑一般为
-> `nums`循环（`x`轴）嵌套`target`循环（`y`轴），且`target`循环倒序
+```js
+nums循环嵌套target循环，且target循环倒序
+```
 #### 可重复背包
 `nums`中的数据可以重复使用，不需要顺序关系
-> `nums`循环（`x`轴）嵌套`target`循环（`y`轴），且`target`循环正序
+```js
+nums循环嵌套target循环，且target循环正序
+```
 #### 排列背包
 `nums`中的数据可重复使用，但是需要考虑元素之间的顺序，不同的顺序代表不同的结果。
-> `target`循环（`x`轴）嵌套`nums`循环（`y`轴）, 都正序
+```js
+target循环嵌套nums循环, 都正序
+```
 
 ### 状态转移方程
 #### 数量问题
 求有多少种组合，有多少满足条件的项
-> dp[i] += dp[i-num];
+```js
+dp[i] += dp[i-num];
+```
 
 #### true,false问题
 验证是否存在满足条件的项
-> dp[i] = dp[i] || dp[i-num];
+```js
+dp[i] = dp[i] || dp[i-num];
+```
 
 
 #### 最大最小问题
 求满足条件的最大/小值
-> dp[i] = Math.max / min(dp[i], dp[i-num]+1);
+```js
+dp[i] = Math.max / min(dp[i], dp[i-num]+1);
+```
 
-## 几道经典例题
+## 实践：几道经典例题
+### 组合总和4
+```js
+leetcode 377
+给你一个由 不同 整数组成的数组 nums ，和一个目标整数 target 。请你从 nums 中找出并返回总和为 target 的元素组合的个数。
+题目数据保证答案符合 32 位整数范围。
+
+输入：nums = [1,2,3], target = 4
+输出：7
+解释：所有可能的组合为：
+(1, 1, 1, 1)
+(1, 1, 2)
+(1, 2, 1)
+(1, 3)
+(2, 1, 1)
+(2, 2)
+(3, 1)
+请注意，顺序不同的序列被视作不同的组合。
+```
+我们先来确定循环以及核心状态转移方程。
+
+因为取的组合数量，所以核心状态转移方程为`dp[i] += dp[i-num]`
+
+属于排列背包，不同顺序的结果被视作不同的组合，所以循环方式为`target循环嵌套nums循环, 都正序`
+
+我们再来确认`dp`的定义，`dp[i][j]`代表当`target`值为`j`时，从`nums`中取出`i`个元素，可以满足总和为`target`的元素组合个数。
+```js
+var combinationSum4 = function(nums, target) {
+	// 二维数组优化成一维数组
+	// 设置长度为target + 1，用于处理target = 0的情况
+  const dp = new Array(target + 1).fill(0);
+	// 初始化dp[0][j]，当使用0个元素，以及target为0时，存在一种组合数，所以为1
+  dp[0] = 1;
+  for (let i = 1; i <= target; i++) {
+    for (const num of nums) {
+      if (num <= i) {
+				// 只有当target大于当前num值，才可能存在使用当前num项的组合
+        dp[i] += dp[i - num];
+      }
+    }
+  }
+  return dp[target];
+};
+```
+### 零钱兑换
+```js
+leetcode 322
+给定不同面额的硬币 nums 和一个总金额 target。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。
+如果没有任何一种硬币组合能组成总金额，返回 -1。
+
+你可以认为每种硬币的数量是无限的。
+
+输入：nums = [1, 2, 5], target = 11
+输出：3
+解释：11 = 5 + 5 + 1
+
+输入：nums = [2], target = 3
+输出：-1
+
+输入：nums = [1], target = 0
+输出：0
+```
+因为取的最小值，所以核心状态转移方程为`dp[i] = Math.min(dp[i], dp[i-num]+1);`
+
+属于可重复背包，`nums`中的数据可以重复使用，所以循环方式为`nums循环嵌套target循环，且target循环正序`
+
+`dp[i][j]`可定义为当使用第`1，2, 3...nums.length`的元素，而且`target`为`j`时，可以凑成总金额的最少硬币个数
+```js
+var coinChange = function(nums, target) {
+  const len = nums.length;
+  // 边界条件处理
+  if (len === 0) return target === 0 ? 0 : -1;
+  const dp = new Array(target + 1).fill(Infinity);
+  // 初始化当x轴为0，即只取nums中的第一个元素时，dp[0,1,2...target]的值
+  for (let i = 0; i <= target; i ++) {
+    // 当前target可以被nums[0]元素整除时，设置该值为i / nums[0]
+    // 这里需要注意，当target为0时，可以存在一个0值，说明取了0个元素
+    if ((i % nums[0]) === 0) dp[i] = i / nums[0];
+  }
+  for (let i = 1; i < len; i ++) {
+    // 这里需要正序遍历，因为nums中的元素可被重复使用
+    // 比如例子中的nums = [1, 2, 5], target = 11，当遍历到5的值时
+    // target = 6时，dp[6]将被更新
+    // amout = 11时，dp[11]的值会跟dp[6]有关，但是这时的dp[6]已经被更新过
+    // 这样就实现了，nums中元素的重复使用
+    for (let j = 1; j <= target; j ++) {
+      if (j >= nums[i]) {
+        // 核心状态转移方程
+        dp[j] = Math.min(dp[j], dp[j - nums[i]] + 1);
+      }
+    }
+  }
+  // 结果的处理
+  const res = dp[target];
+  return res === Infinity ? -1 : res;
+}
+```
+### 分割等和子集
+```js
+leetcode 416
+给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+
+输入：nums = [1,5,11,5]
+输出：true
+解释：数组可以分割成 [1, 5, 5] 和 [11] 。
+
+输入：nums = [1,2,3,5]
+输出：false
+解释：数组不能分割成两个元素和相等的子集。
+```
+本题需要先对该数据进行处理，使其符合背包问题的形式。
+
+因为是分成两个子集，所以只需要判断是否能够选出`n`个元素，和为`sum/2`。
+
+因为是判断是否存在满足的条件，所以核心状态转移方程为`dp[i] = dp[i] || dp[i-num]`
+
+属于类0-1背包问题，因为`nums`中的数据只能使用一次，所以循环方式为`nums循环嵌套target(即sum/2)循环，且target循环倒序`
+
+`dp[i][j]`代表当取`nums[0...i]`里的元素时，是否存在子集的值之和等于`j`
+```js
+var canPartition = function(nums) {
+	// 计算sum / 2
+	let sum = 0, len = nums.length;
+	for (let i = 0; i < len; i ++) {
+		sum = sum + nums[i];
+	}
+	if (sum % 2 !== 0) return false;
+	let target = sum / 2;
+	// 使用target(sum / 2)作为容量，创建一个target + 1的数组
+	let dp = new Array(target + 1).fill(false);
+	// dp[0][j]的初始化，即当只取nums[0]的情况
+	// 当i等于nums[0]的情况，dp[i]设为true
+	for (let i = 0; i <= target; i ++) {
+		dp[i] = (nums[0] === i);
+	}
+	// 这里的i代表当前取的是nums[i]元素
+	// 套用上面的循环逻辑
+	for (let i = 1; i < len;i ++) {
+		for (let j = target; j >= nums[i]; j --) {
+			// 套用上面的核心状态转移方程
+			dp[j] = dp[j] || dp[j - nums[i]];
+		}
+	}
+	return dp[target];
+}
+```
+
+## 总结和建议
+本文中总结了一些常见的背包问题的解题方法（循环的方式，状态转移方程）。在背包问题的解题过程中，如果题型可以对号入座，
+那就可以根据这些方法去寻找解题的思路，对于初学者来说，可以提高不少的解题效率。
+
+这边我还需要说明一下，单纯的去记忆这些方法是没有用的，各位一定要在理解的基础上去记忆。因为这些方法只是一个最最基本的框，根据题目的不同，条件的不同，都会导致的边界情况、`dp`,循环,状态转移方程的定义的变化，所以我们得根据具体的场景去对代码逻辑进行修改。
+
+而且背包问题肯定不止这么几种分类，它还有很多其他的变种，比如多维费用的背包问题，有依赖的背包问题等等。对于这些问题，还需要我们对于这些基本的方法进行一个拓展。
+
+总之，变强只有一条路，多刷题。
+
+## 感谢
+感谢各位的阅读，如果本文对你有所帮助的话，请动手点个赞，感谢！
