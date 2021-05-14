@@ -21,21 +21,39 @@
  * 最终得到一个包含所有符合条件路径。
  */
 
-var pathSum = function(root, targetSum) {
-  // 递归终止条件
-  if (!root) return [];
-  // 当该节点时叶子节点，而且节点值等于targetSum时，返回一个双重数组
-  if (!root.left && !root.right && root.val === targetSum) return [[root.val]];
+// var pathSum = function(root, targetSum) {
+//   // 递归终止条件
+//   if (!root) return [];
+//   // 当该节点时叶子节点，而且节点值等于targetSum时，返回一个双重数组
+//   if (!root.left && !root.right && root.val === targetSum) return [[root.val]];
 
-  // 获取左侧以及右侧的路径节点的双重数组，然后给每个路径数组unshift一个当前节点的值
-  let left = pathSum(root.left, targetSum - root.val);
-  for (let i = 0; i < left.length; i ++) {
-    left[i].unshift(root.val);
-  }
-  let right = pathSum(root.right, targetSum - root.val);
-  for (let i = 0; i < right.length; i ++) {
-    right[i].unshift(root.val);
-  }
-  // 保持返回数组为一个双重数组
-  return [...left, ...right];
-};
+//   // 获取左侧以及右侧的路径节点的双重数组，然后给每个路径数组unshift一个当前节点的值
+//   let left = pathSum(root.left, targetSum - root.val);
+//   for (let i = 0; i < left.length; i ++) {
+//     left[i].unshift(root.val);
+//   }
+//   let right = pathSum(root.right, targetSum - root.val);
+//   for (let i = 0; i < right.length; i ++) {
+//     right[i].unshift(root.val);
+//   }
+//   // 保持返回数组为一个双重数组
+//   return [...left, ...right];
+// };
+
+
+// 学习递归回溯之后，重写的方法
+// 更容易理解的递归解法
+var pathSum = function(root, targetSum) { 
+  if (!root) return [];
+  const res = [];
+  const loop = (node, target, arr) => {
+    if (!node) return;
+    const newArr = [...arr, node.val];
+    const curTarget = target - node.val;
+    if (!node.left && !node.right && curTarget === 0) return res.push(newArr);
+    if (node.left) loop(node.left, curTarget, newArr);
+    if (node.right) loop(node.right, curTarget, newArr);
+  };
+  loop(root, targetSum, []);
+  return res;
+}
