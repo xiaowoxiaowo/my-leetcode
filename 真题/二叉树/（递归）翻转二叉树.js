@@ -19,14 +19,16 @@
  *   / \   /  \
  *  9   6  3   1
  * 
+ *  
  * 
- * 解题思路：
+ * 解题思路：1
  * 
  * 
  */
 
 var invertTree = function(root) {
-	if (!root) return root;
+  if (!root) return root;
+  // 两边翻转
 	invertTree(root.left);
 	invertTree(root.right);
 	[root.left, root.right] = [root.right, root.left];
