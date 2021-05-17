@@ -32,3 +32,18 @@ var kthSmallest = function(root, k) {
   }
   return -1;
 };
+
+// 递归思路直接实现
+var kthSmallest = function(root, k) {
+  if (!root) return -1;
+  let n = 1;
+  const loop = (node) => {
+    if (!node) return;
+    const left = loop(node.left);
+    if (left !== undefined) return left;
+    if (n++ === k) return node.val;
+    const right = loop(node.right);
+    if (right !== undefined) return right;
+  };
+  return loop(root);
+}
