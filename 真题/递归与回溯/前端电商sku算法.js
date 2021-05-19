@@ -13,6 +13,7 @@ let storages = ["64g", "256g"];
   ["iPhone XS", "白色", "256g"],
 ]
 
+
 const permute = (...arg) => {
 	let res = [];
 	const loop = (index, arr) => {
