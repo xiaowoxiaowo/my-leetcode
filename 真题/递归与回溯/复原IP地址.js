@@ -63,3 +63,4 @@ var restoreIpAddresses = function(s) {
 };
 
 console.log(restoreIpAddresses("010010"));
+

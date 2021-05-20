@@ -30,6 +30,7 @@
  * n == grid[i].length
  * 1 <= m, n <= 300
  * 
+ * 
  * 解题思路：
  * 类似 单词搜索 的思路，从二维平面上进行递归回溯，还要稍微简单一些。双重循环该数组，然后当值为1的时候，进行dfs。
  * 将连接的所有1的节点全部记录下来。然后继续循环，并判断其他值为1的节点（必须是没有被使用过的节点）。
@@ -68,6 +69,37 @@ var numIslands = function(grid) {
 				// 每当遍历一个为1而且没有被使用过的节点时，将该节点作为顶部节点，将连接它的所有节点都记录下来
 				dfs(i, j);
 				// 发现的岛屿数量加1
+				res++;
+			}
+		}
+	}
+	return res;
+};
+
+
+// 不需要定义visited记录访问的数据，直接修改递归过的值即可
+var numIslands = function(grid) {
+	const dirct = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+	const lenX = grid.length;
+	const lenY = grid[0].length;
+	let res = 0;
+	const inArea = (x, y) => {
+		return 0 <= x && x < lenX && 0 <= y && y < lenY;
+	};
+	const dfs = (startX, startY) => {
+		grid[startX][startY] = '11';
+		for (let i = 0; i < dirct.length; i ++) {
+			const newX = startX + dirct[i][0];
+			const newY = startY + dirct[i][1];
+			if (inArea(newX, newY) && grid[newX][newY] === '1') {
+				dfs(newX, newY);
+			}
+		}
+	};
+	for (let i = 0; i < lenX; i ++) { 
+		for (let j = 0; j < lenY; j ++) {
+			if (grid[i][j] === '1') {
+				dfs(i, j);
 				res++;
 			}
 		}
