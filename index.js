@@ -1,1 +1,1 @@
-import './真题/贪心/跳跃游戏2';
+import './practice';
