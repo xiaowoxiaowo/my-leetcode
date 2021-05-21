@@ -33,4 +33,4 @@ var topKFrequent = function(words, k) {
 };
 
 // console.log(topKFrequent(["i", "love", "leetcode", "i", "love", "coding"], 2));
-console.log(topKFrequent(["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], 4));
+// console.log(topKFrequent(["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], 4));
