@@ -45,7 +45,7 @@ var findNumberOfLIS = function(nums) {
   }
   // 因为最长序列的解答最后一位值的存在顺序并不确定，所以需要遍历一遍
   // 遍历所有最长序列长度等于最大值的节点，将它们的最长序列个数相加
-  for(let i = 0; i < len; i ++){
+  for (let i = 0; i < len; i ++) {
     if (dp[i] === max) res += lenList[i];
   }
   return res;
