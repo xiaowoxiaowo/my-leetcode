@@ -20,18 +20,18 @@ var maxProfit = function(prices) {
   const len = prices.length;
   if (len < 2) return 0;
   // dp为一个二维数组，定义为[0...i]区间里，[最小买入值，最大卖出值]
-  let dp = new Array(len).fill(0).map(v => new Array(2).fill(0));
+  let dp = [-prices[0], 0];
   // 将买入值设为负数，便于后续操作
-  dp[0] = [-prices[0], 0];
   for (let i = 1; i < len; i ++) {
+    const [maxIn, maxOut] = dp;
     // 设置当前节点的最大卖出值
     // 对于每个节点，可以卖，可以不卖。所以取 前一个节点的最大卖出值 和 前一个节点的最小买入值 + 卖出当前节点 的较大值
-    dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] + prices[i]);
+    dp[1] = Math.max(maxOut, maxIn + prices[i]);
     // 设置当前节点的最小卖出值
     // 对于每个节点，可以买，可以不买。所以取 前一个节点的最小买入值 和 前一个节点的最大卖出值 - 买入当前节点 的较大值
-    dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+    dp[0] = Math.max(maxIn, maxOut - prices[i]);
   }
-  return dp[len - 1][1];
+  return dp[1];
 };
 
 console.log(maxProfit([1,2,3,4,5]));
