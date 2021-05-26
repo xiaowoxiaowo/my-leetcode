@@ -1,36 +1,44 @@
 /***
- * leetcode 692 前K个高频单词
- * 给一非空的单词列表，返回前 k 个出现次数最多的单词。
- * 返回的答案应该按单词出现频率由高到低排序。
- * 如果不同的单词有相同出现频率，按字母顺序排序。
+ * leetcode 2
+ * 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+ * 请你将两个数相加，并以相同形式返回一个表示和的链表。
+ * 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
  * 
- * 输入: ["i", "love", "leetcode", "i", "love", "coding"], k = 2
- * 输出: ["i", "love"]
- * 解析: "i" 和 "love" 为出现次数最多的两个单词，均为2次。注意，按字母顺序 "i" 在 "love" 之前。
+ * 输入：l1 = [2,4,3], l2 = [5,6,4]
+ * 输出：[7,0,8]
+ * 解释：342 + 465 = 807.
  * 
- * 输入: ["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], k = 4
- * 输出: ["the", "is", "sunny", "day"]
- * 解析: "the", "is", "sunny" 和 "day" 是出现次数最多的四个单词，出现次数依次为 4, 3, 2 和 1 次。
+ * 输入：l1 = [0], l2 = [0]
+ * 输出：[0]
  * 
- * 说明：
- * 假定 k 总为有效值， 1 ≤ k ≤ 集合元素数。
- * 输入的单词均由小写字母组成。
- * 尝试以 O(n log k) 时间复杂度和 O(n) 空间复杂度解决。
+ * 输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+ * 输出：[8,9,9,9,0,0,0,1]
+ * 
+ * function ListNode(val, next) {
+ *   this.val = (val===undefined ? 0 : val)
+ *   this.next = (next===undefined ? null : next)
+ * }
  */
 
-var topKFrequent = function(words, k) {
-  const len = words.length;
-  if (len === 0) return [];
-  if (len === 1) return [words[0]];
-  const m = {};
-  for (let i = 0; i < len; i ++) {
-    const v = m[words[i]];
-    m[words[i]] = v ? v + 1 : 1;
+var addTwoNumbers = function(l1, l2) {
+  let curL = l1;
+  let curR = l2;
+  let overTen = false;
+  while (curL || curR) {
+    let sum = curL ? curL.val : 0 + curR ? curR.val : 0;
+    if (overTen) {
+      sum++;
+      overTen = false;
+    }
+    if (sum >= 0) {
+      sum = sum - 10;
+      overTen = true;
+    }
+    curR.val = sum;
+    curL
   }
-  return Object.entries(m).sort((a, b) => (
-    (a[1] !== b[1]) ? b[1] - a[1] : a[0].localeCompare(b[0])
-  )).slice(0, k).map(v => v[0]);;
-};
+  if (overTen) {
 
-// console.log(topKFrequent(["i", "love", "leetcode", "i", "love", "coding"], 2));
-// console.log(topKFrequent(["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], 4));
+  }
+  return l2;
+};
