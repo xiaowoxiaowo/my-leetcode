@@ -1,1 +1,1 @@
-import './practice';
+import './练习/practice';
