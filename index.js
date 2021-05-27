@@ -1,1 +1,1 @@
-import './练习/买卖股票的最佳时机4';
+import './practice';

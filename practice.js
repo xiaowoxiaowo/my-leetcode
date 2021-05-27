@@ -19,26 +19,35 @@
  *   this.next = (next===undefined ? null : next)
  * }
  */
+import { createLinkedList, printfLinkedList, ListNode } from './src/utils';
 
 var addTwoNumbers = function(l1, l2) {
   let curL = l1;
   let curR = l2;
   let overTen = false;
+  let dummyHead = new ListNode();
+  let curLink = dummyHead;
   while (curL || curR) {
-    let sum = curL ? curL.val : 0 + curR ? curR.val : 0;
+    let sum = (curL ? curL.val : 0) + (curR ? curR.val : 0);
     if (overTen) {
       sum++;
       overTen = false;
     }
-    if (sum >= 0) {
+    if (sum >= 10) {
       sum = sum - 10;
       overTen = true;
     }
-    curR.val = sum;
-    curL
+    curLink.next = new ListNode(sum);
+    curLink = curLink.next;
+    curL = curL ? curL.next : curL;
+    curR = curR ? curR.next : curR;
   }
   if (overTen) {
-
+    curLink.next = new ListNode(1);
   }
-  return l2;
+  return dummyHead.next;
 };
+
+var link1 = createLinkedList([9,9,9,9,9,9,9]);
+var link2 = createLinkedList([9,9,9,9]);
+console.log(printfLinkedList(addTwoNumbers(link1, link2)));
