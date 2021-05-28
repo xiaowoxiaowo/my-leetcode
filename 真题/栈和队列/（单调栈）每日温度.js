@@ -9,16 +9,24 @@
  * 提示：气温 列表长度的范围是 [1, 30000]。每个气温的值的均为华氏度，都是在 [30, 100] 范围内的整数。
  * 
  */
-
+// 单调栈思路，单调栈适用于这种需要计算左节点，右节点比自己大或者小的情况
+// 对于本题来举例，可以声明一个单调栈，从右往左遍历数组
+// 单调栈是一个从左到右，值从大到小的数组，第一个值是当前遍历过程中最大的值。
+// 每次遍历一个值，会把所有比这个值小的数组pop出单调栈，然后再把这个值push进单调栈。
 const dailyTemperatures = (T) => {
   const len = T.length;
   const res = new Array(len).fill(0);
+  // 定义单调栈
   const stack = [];
+  // 从右往左遍历
   for (let i = len - 1; i >= 0; i --) {
+    // pop出所有单调栈中比当前值小的元素
     while (stack.length && T[i] >= T[stack[stack.length - 1]]) {
       stack.pop();
     }
+    // 如果单调栈还有剩余，说明数组右侧存在比当前节点大的节点，单调栈的末尾即是最接近的节点
     if (stack.length) res[i] = stack[stack.length - 1] - i;
+    // 将当前节点推入单调栈
     stack.push(i);
   }
   return res;
