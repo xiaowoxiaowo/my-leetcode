@@ -1,5 +1,5 @@
 /***
- * leetcode 1744 你能在你最喜欢的那天吃到你最喜欢的糖果吗？
+ * leetcode 1744
  * 
  * 给你一个下标从 0 开始的正整数数组 candiesCount ，其中 candiesCount[i] 表示你拥有的第 i 类糖果的数目。
  * 同时给你一个二维数组 queries ，其中 queries[i] = [favoriteTypei, favoriteDayi, dailyCapi] 。
@@ -36,11 +36,16 @@ var canEat = function(candiesCount, queries) {
   const res = new Array(queries.length).fill(false);
   const dp = new Array(candiesCount.length).fill(candiesCount[0]);
   for (let i = 1; i < dp.length; i ++) {
+    // 动态规划，先计算前缀和
     dp[i] = dp[i - 1] + candiesCount[i];
   }
+  // 处理下标为-1的情况
   dp[-1] = -Infinity;
   for (let i = 0; i < queries.length; i ++) {
     const [type, day, max] = queries[i];
+    // 要判断在第day天是否能吃到类型为type的糖果，只需要满足下面两个条件
+    // 1.dp[type] > day，即每天如果只吃一颗糖果，类型type的糖果的前缀之和必须是大于天数day的
+    // 2.dp[type - 1] < (max * (day + 1))，即每天如果吃最多的糖果max，必须满足吃到第day天时，第type-1天的糖果前缀之和已经被吃完了。
     res[i] = dp[type] > day && dp[type - 1] < (max * (day + 1));
   }
   return res;
