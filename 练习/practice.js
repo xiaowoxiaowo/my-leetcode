@@ -1,43 +1,44 @@
 /***
- * leetcode 96 不同的二叉搜索树
+ * 525. 连续数组
  * 
- * 给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？返回满足题意的二叉搜索树的种数。
+ * 给定一个二进制数组 nums , 找到含有相同数量的 0 和 1 的最长连续子数组，并返回该子数组的长度。
  * 
- * 
- * 输入：n = 3
- * 输出：5
- *   1       1        2        3    3                  
- *    \       \      / \      /    /                  
- *     3       2    1   3    2    1                    
- *    /         \           /      \
- *   2           3         1        2
+ * 输入: nums = [0,1]
+ * 输出: 2
+ * 说明: [0, 1] 是具有相同数量0和1的最长连续子数组。
  *  
+ * 输入: nums = [0,1,0]
+ * 输出: 2
  * 
- * 
- * 
- * 输入：n = 1
- * 输出：1
+ * 说明: 
+ * 1 <= nums.length <= 105
+ * nums[i] 不是 0 就是 1
  * 
  */
-// 动态规划的思路，n个节点，其实每次就是求把1...n这几个节点作为根节点时候的种数
-// 因为需要组成二叉搜索树，二叉搜索树的根节点左侧的值都比根节点小，右侧的值都比根节点大。
-// 所以其实就是求当i作为节点时，（左侧有 i - 1 个节点的组成种数）* （右侧有 n - i 个节点的组成种数）
-var numTrees = function(n) {
-  if (n <= 1) return n;
-  const dp = new Array(n + 1).fill(0);
-  // 初始化dp，0个节点只有0种，1个节点只有一种
-  dp[0] = 1;
-  dp[1] = 1;
-  // 遍历[2...n]的节点
-  for (let i = 2; i <= n; i ++) {
-    // 遍历[1...i]的情况，求这些节点作为根节点时候的种数之和
-    for (let j = 1; j <= i; j ++) {
-      // 核心转移方程
-      dp[i] = dp[i] + dp[j - 1] * dp[i - j];
+var findMaxLength = function(nums) {
+  const len = nums.length;
+  if (nums < 2) return 0;
+  const sum = new Array(len).fill(0);
+  const map = {};
+  let max = 0;
+  for (let i = 0; i < len; i ++) {
+    if (i === 0) {
+      sum[i] = nums[i] ? 1 : -1;
+      map[sum[i]] = i;
+    } else {
+      sum[i] = Number(sum[i - 1]) + Number(nums[i] ? 1 : -1);
+      if (sum[i] === 0) {
+        max = Math.max(max, i + 1);
+      } else {
+        if (map[sum[i]] !== undefined) {
+          max = Math.max(max, i - map[sum[i]]);
+        } else {
+          map[sum[i]] = i;
+        }
+      }
     }
   }
-  return dp[n];
+  return max;
 };
 
-console.log(numTrees(3));
-console.log(numTrees(4));
+console.log(findMaxLength([0,0,1,0,0,0,1,1]));
