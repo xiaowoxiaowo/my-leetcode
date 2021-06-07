@@ -1,48 +1,31 @@
 /***
- * leetcode 647 回文子串
+ * leetcode 605 种花问题
  * 
- * 给定一个字符串，你的任务是计算这个字符串中有多少个回文子串。具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
+ * 假设有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花不能种植在相邻的地块上，它们会争夺水源，两者都会死去。
  * 
- * 输入："abc"
- * 输出：3
- * 解释：三个回文子串: "a", "b", "c"
+ * 给你一个整数数组  flowerbed 表示花坛，由若干 0 和 1 组成，其中 0 表示没种植花，1 表示种植了花。
+ * 另有一个数 n ，能否在不打破种植规则的情况下种入 n 朵花？能则返回 true ，不能则返回 false。
  * 
- * 输入："aaa"
- * 输出：6
- * 解释：6个回文子串: "a", "a", "a", "aa", "aa", "aaa"
+ * 输入：flowerbed = [1,0,0,0,1], n = 1
+ * 输出：true
+ * 
+ * 输入：flowerbed = [1,0,0,0,1], n = 2
+ * 输出：false
+ * 
  */
-// 动态规划判断回文串思路，定义一个dp[i][j]代表s[i...j]这个字符串是否是回文串
-// 比如想判断一个s[m...n]的子串是否是回文子串，只需要满足两个条件，s[m] === s[n] 和 dp[m + 1][n - 1] 为true
-var countSubstrings = function(s) {
-  let res = 0;
-  const len = s.length;
-  if (len <= 1) return len;
-  // 定义一个二维数组
-  const dp = new Array(len).fill(false).map(v => new Array(len).fill(false));
-  // d为每次遍历的字符串左右节点的距离
-  for (let d = 0; d < len; d ++) {
-    // i为字符串的初始节点
-    // 这里的遍历是把以[0...len-1]节点作为左侧开始节点，每次都判断[i...i + d]这个范围内的字符串是否满足回文串
-    for (let i = 0; i < len - d; i ++) {
-      if (d === 0) {
-        // 如果距离为0，即字符串长度为1，都满足回文串
-        dp[i][i + d] = true;
-        res++;
-      } else if (i + d < len) {
-        // 如果距离大于0，而且i + d不超出s的长度
-        if (s[i + d] === s[i] && (d === 1 || dp[i + 1][i + d - 1])) {
-          // 满足条件，设置dp为true
-          dp[i][i + d] = true;
-          res++;
-        }
-      }
+
+var canPlaceFlowers = function(flowerbed, n) {
+  const len = flowerbed.length;
+  if (n > len / 2) return false;
+  let sum = 0;
+  for (let i = 0; i < len; i ++) {
+    if (flowerbed[i] === 0 && i === 0 && flowerbed[i + 1] === 0) {
+      flowerbed[0] = 1;
+      sum++;
     }
+    let can = true;
+    if (flowerbed[i - 1] !== 0) can = false;
+    if (flowerbed[i] !== 0) can = false;
+    if (flowerbed[i + 1] !== 0) can = false;
   }
-  return res;
 };
-
-// 这里可以进行一些优化，dp只需要定义为一个一维数组即可，可以改变遍历的顺序
-// 第一层i遍历[0...len - 1]，第二层遍历[0...i]
-// 这样，每次遍历的范围都是下一次遍历需要使用的dp数据
-
-console.log(countSubstrings('abc'));
