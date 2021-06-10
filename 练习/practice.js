@@ -1,18 +1,22 @@
 /***
- * leetcode 605 种花问题
+ * leetcode 879 盈利计划
  * 
- * 假设有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花不能种植在相邻的地块上，它们会争夺水源，两者都会死去。
+ * 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。 
  * 
- * 给你一个整数数组  flowerbed 表示花坛，由若干 0 和 1 组成，其中 0 表示没种植花，1 表示种植了花。
- * 另有一个数 n ，能否在不打破种植规则的情况下种入 n 朵花？能则返回 true ，不能则返回 false。
+ * 输入: amount = 5, coins = [1, 2, 5]
+ * 输出: 4
+ * 解释: 有四种方式可以凑成总金额:
+ * 5=5
+ * 5=2+2+1
+ * 5=2+1+1+1
+ * 5=1+1+1+1+1
  * 
- * 输入：flowerbed = [1,0,0,0,1], n = 1
- * 输出：true
- * 
- * 输入：flowerbed = [1,0,0,0,1], n = 2
- * 输出：false
+ * 输入: amount = 3, coins = [2]
+ * 输出: 0
+ * 解释: 只用面额2的硬币不能凑成总金额3。
  * 
  */
+<<<<<<< HEAD
 
 var canPlaceFlowers = function(flowerbed, n) {
   const len = flowerbed.length;
@@ -38,3 +42,22 @@ var canPlaceFlowers = function(flowerbed, n) {
 };
 
 console.log(canPlaceFlowers([0], 1));
+=======
+var change = function(amount, coins) {
+	const len = coins.length;
+	if (amount === 0) return 1;
+	if (len === 1) return (amount % coins[0] === 0) ? 1 : 0;
+	const dp = new Array(amount + 1).fill(0);
+	for (let i = 0; i <= amount; i ++) {
+    if ((i % coins[0]) === 0) dp[i] = 1;
+  }
+	for (let i = 1; i < len; i ++) {
+		for (let j = coins[i]; j <= amount; j ++) {
+			dp[j] += dp[j - coins[i]];
+		}
+	}
+	return dp[amount];
+}
+
+console.log(change(5, [1, 2, 5]));
+>>>>>>> 48c0d35c20e59e1f46eb43b0daa31396189f56f1
