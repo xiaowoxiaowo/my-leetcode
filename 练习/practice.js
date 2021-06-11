@@ -1,63 +1,36 @@
 /***
  * leetcode 879 盈利计划
  * 
- * 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。 
+ * 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
+ * 给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
+ * 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。
+ * 例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
  * 
- * 输入: amount = 5, coins = [1, 2, 5]
- * 输出: 4
- * 解释: 有四种方式可以凑成总金额:
- * 5=5
- * 5=2+2+1
- * 5=2+1+1+1
- * 5=1+1+1+1+1
+ * 输入：n = 12
+ * 输出：3 
+ * 解释：12 = 4 + 4 + 4
  * 
- * 输入: amount = 3, coins = [2]
- * 输出: 0
- * 解释: 只用面额2的硬币不能凑成总金额3。
- * 
+ * 输入：n = 13
+ * 输出：2
+ * 解释：13 = 4 + 9
  */
-<<<<<<< HEAD
 
-var canPlaceFlowers = function(flowerbed, n) {
-  const len = flowerbed.length;
-	let sum = 0;
-	let prev = -1;
-  for (let i = 0; i < len; i ++) {
-		if (flowerbed[i] === 1) {
-			if (prev < 0) {
-				sum += Math.floor(i / 2);
+var numSquares = function(n) {
+	const dp = new Array(n + 1).fill(0);
+	for (let i = 1; i <= n; i ++) {
+		dp[i] = i;
+		for (let j = 1; j * j <= i; j ++) {
+			const sum = j * j;
+			if ((i - sum) <= 1) {
+				dp[i] = i - sum + 1;
+				break;
 			} else {
-				sum += Math.floor((i - prev - 2) / 2);
+				dp[i] = Math.min(dp[i], 1 + dp[i - sum]);
 			}
-			if (sum >= n) return true;
-			prev = i;
 		}
 	}
-	if (prev < 0) {
-		sum += Math.floor((len + 1) / 2);
-	} else {
-		sum += Math.floor((len - prev - 1) / 2);
-	}
-	return sum >= n;
-};
-
-console.log(canPlaceFlowers([0], 1));
-=======
-var change = function(amount, coins) {
-	const len = coins.length;
-	if (amount === 0) return 1;
-	if (len === 1) return (amount % coins[0] === 0) ? 1 : 0;
-	const dp = new Array(amount + 1).fill(0);
-	for (let i = 0; i <= amount; i ++) {
-    if ((i % coins[0]) === 0) dp[i] = 1;
-  }
-	for (let i = 1; i < len; i ++) {
-		for (let j = coins[i]; j <= amount; j ++) {
-			dp[j] += dp[j - coins[i]];
-		}
-	}
-	return dp[amount];
+	return dp[n];
 }
 
-console.log(change(5, [1, 2, 5]));
->>>>>>> 48c0d35c20e59e1f46eb43b0daa31396189f56f1
+console.log(numSquares(12));
+console.log(numSquares(13));
