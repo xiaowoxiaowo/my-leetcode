@@ -51,6 +51,7 @@ var maxFrequency = function(nums, k) {
   return max;
 };
 
+
 console.log(maxFrequency([3,9,6], 2));
 console.log(maxFrequency([1,2,4], 5));
 console.log(maxFrequency([1,4,8,13], 5));

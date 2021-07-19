@@ -4,6 +4,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './index.js',
+  module: {
+    rules: [
+    	{
+        test: '/\.js$/',
+        use: path.resolve(__dirname, 'loaders/myLoader.js')
+      }
+    ]
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
