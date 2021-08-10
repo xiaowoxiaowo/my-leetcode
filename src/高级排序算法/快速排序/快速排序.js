@@ -53,7 +53,7 @@ function _quickSort(arrList, l, r) {
 
 function quickSort(arrList) {
   const len = arrList.length;
-  _quickSort(arrList, 0, len -1);
+  _quickSort(arrList, 0, len - 1);
 }
 
 const test = getRandomArray(100);
