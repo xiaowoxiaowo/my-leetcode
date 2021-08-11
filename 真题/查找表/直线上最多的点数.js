@@ -27,9 +27,7 @@ var getC = (point1, point2) => {
 };
 // 取最大公约数方法，精准度高，速度慢
 const gcd = (a, b) => {
-	if (b === 0) {
-		return a
-	}
+	if (b === 0) return a;
 	return gcd(b, a % b)
 }
 
