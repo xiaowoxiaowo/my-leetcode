@@ -18,26 +18,6 @@
  * 组合 1 和 1，得到 0，所以数组转化为 [1]，这就是最优值。
  * 
  */
-// 每次挑出两块最重的石头，每次对数组进行一次排序
-var lastStoneWeight = function(stones) {
-  const len = stones.length;
-  if (len === 0) return 0;
-  if (len === 1) return stones[0];
-  let arr = stones.sort((a, b) => b - a);
-  while (arr.length > 1) {
-    let res = [];
-    for (let i = 0; i < arr.length; i += 2) {
-      if (i === arr.length - 1) return arr[i];
-      if (arr[i] !== arr[i + 1]) {
-        res = [arr[i] - arr[i + 1], ...arr.slice(i + 2)]
-        break;
-      }
-    }
-    arr = res.sort((a, b) => b - a);
-  }
-  if (arr.length === 0) return 0
-  return arr[0];
-};
 
 // 用递归的思路减少代码量
 var lastStoneWeight = function(stones) {
