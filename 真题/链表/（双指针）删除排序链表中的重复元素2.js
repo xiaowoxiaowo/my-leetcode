@@ -41,12 +41,10 @@ var deleteDuplicates = function(head) {
 	}
 	// 处理在null之前的链表都是相等的情况
 	if (f) {
-		p.next = null;
+		p === dummy ? p.next.next = null : p.next = null;
 	}
 	return dummy.next;
 };
 
-var test1 = createLinkedList([1,2,3,3,4,4,5]);
-var test2 = createLinkedList([1,1,1,2,3]);
-console.log(printfLinkedList(deleteDuplicates(test1)));
+var test2 = createLinkedList([1,1,1,1]);
 console.log(printfLinkedList(deleteDuplicates(test2)));
