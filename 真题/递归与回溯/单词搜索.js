@@ -27,50 +27,89 @@
  */
 
 var exist = function(board, word) {
-	// 定义方向的顺序，上右下左，要注意这里的x和y的值，跟坐标轴是反的。
-	const dirct = [[-1, 0], [0, 1], [1, 0], [0, -1]];
-	// 获取最大X值和最大Y值
-	const lenX = board.length;
-	const lenY = board[0] ?  board[0].length : 0;
-	// 初始化一个二维数组，用来记录后续使用的元素
-	let visited = new Array(board.length);
-	for (let d = 0; d < board.length; d ++) {
-		visited[d] = [];
-	}
-	// 辅助函数，用来判断当前的坐标是否超出二维网格范围
-	const inArea = (x, y) => {
-		return 0 <= x && x < lenX && 0 <= y && y < lenY;
-	};
-  // 递归主函数,传入当前需要判断的word序号，以及当前递归的二维网格节点位置
-	const searchWord = (index, startX, startY) => {
-		// 如果当前节点跟需要判断的word节点不相等，直接返回
-		if (board[startX][startY] !== word[index]) return false;
-		// 如果当前递归的长度等于word节点长度，说明已经找到相应单词，返回true。
+	const xLen = board.length;
+	const yLen = board[0].length;
+	const direct = [[-1, 0], [0, -1], [1, 0], [0, 1]];
+	const inArea = (x, y) => 0 <= x && x < xLen && 0 <= y && y < yLen;
+	const used = {};
+	const loop = (index, x, y) => {
+		if (board[x][y] !== word[index]) return false;
 		if (index === word.length - 1) return true;
-		// 记录当前使用的元素
-		visited[startX][startY] = true;
-		// 向四个方向进行递归
-		for (let i = 0; i < dirct.length; i ++) {
-			const newX = startX + dirct[i][0];
-			const newY = startY + dirct[i][1];
-			// 判断新节点是否存在二维网格，以及判断新节点是否被使用过
-			if (inArea(newX, newY) && !visited[newX][newY]) {
-				// 继续递归
-				if (searchWord(index + 1, newX, newY)) return true;
+		used[`${x}-${y}`] = true;
+		for (let i = 0; i < direct.length; i ++) {
+			const newX = x + direct[i][0];
+			const newY = y + direct[i][1];
+			if (inArea(newX, newY) && !used[`${newX}-${newY}`]) {
+				if (loop(index + 1, newX, newY)) return true;
 			}
 		}
-		// 回溯当前使用的元素
-		visited[startX][startY] = false;
+		used[`${x}-${y}`] = false;
 	};
-  // 双重循环，遍历二维网格中的所有节点
-	for (let i = 0; i < board.length; i ++) { 
-		for (let j = 0; j < board[i].length; j ++) {
-			// 调用递归主函数
-			if (searchWord(0, i, j)) return true;
+	for (let i = 0; i < xLen; i ++) {
+		for (let j = 0; j < yLen; j ++) {
+			if (loop(0, i, j)) return true;
 		}
 	}
 	return false;
-}; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var exist = function(board, word) {
+// 	// 定义方向的顺序，上右下左，要注意这里的x和y的值，跟坐标轴是反的。
+// 	const dirct = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+// 	// 获取最大X值和最大Y值
+// 	const lenX = board.length;
+// 	const lenY = board[0] ?  board[0].length : 0;
+// 	// 初始化一个二维数组，用来记录后续使用的元素
+// 	let visited = new Array(board.length);
+// 	for (let d = 0; d < board.length; d ++) {
+// 		visited[d] = [];
+// 	}
+// 	// 辅助函数，用来判断当前的坐标是否超出二维网格范围
+// 	const inArea = (x, y) => {
+// 		return 0 <= x && x < lenX && 0 <= y && y < lenY;
+// 	};
+//   // 递归主函数,传入当前需要判断的word序号，以及当前递归的二维网格节点位置
+// 	const searchWord = (index, startX, startY) => {
+// 		// 如果当前节点跟需要判断的word节点不相等，直接返回
+// 		if (board[startX][startY] !== word[index]) return false;
+// 		// 如果当前递归的长度等于word节点长度，说明已经找到相应单词，返回true。
+// 		if (index === word.length - 1) return true;
+// 		// 记录当前使用的元素
+// 		visited[startX][startY] = true;
+// 		// 向四个方向进行递归
+// 		for (let i = 0; i < dirct.length; i ++) {
+// 			const newX = startX + dirct[i][0];
+// 			const newY = startY + dirct[i][1];
+// 			// 判断新节点是否存在二维网格，以及判断新节点是否被使用过
+// 			if (inArea(newX, newY) && !visited[newX][newY]) {
+// 				// 继续递归
+// 				if (searchWord(index + 1, newX, newY)) return true;
+// 			}
+// 		}
+// 		// 回溯当前使用的元素
+// 		visited[startX][startY] = false;
+// 	};
+//   // 双重循环，遍历二维网格中的所有节点
+// 	for (let i = 0; i < board.length; i ++) { 
+// 		for (let j = 0; j < board[i].length; j ++) {
+// 			// 调用递归主函数
+// 			if (searchWord(0, i, j)) return true;
+// 		}
+// 	}
+// 	return false;
+// }; 
 
 const bb = 
  [
