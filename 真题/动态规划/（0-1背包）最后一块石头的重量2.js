@@ -51,3 +51,23 @@ var lastStoneWeightII = function(stones) {
 };
 
 console.log(lastStoneWeightII([1,2]));
+
+
+
+
+
+
+
+
+var lastStoneWeightII = function(stones) {
+	const len = stones.length;
+	const sum = stones.reduce((pre, cur) => pre + cur, 0);
+	const T = Math.floor(sum / 2);
+	const dp = new Array(T + 1).fill(0);
+	for (let i = 0; i < len; i ++) {
+		for (let j = T; j >= stones[i]; j--) {
+			dp[j] = Math.max(dp[j], stones[i] + dp[j - stones[i]]);
+		}
+	}
+	return sum - dp[T] * 2;
+}
