@@ -81,4 +81,19 @@ var canPartition = function(nums) {
  * 输出：false
  * 解释：数组不能分割成两个元素和相等的子集。
  * */
- var canPartition = function(nums) {}
+ var canPartition = function(nums) {
+	 const len = nums.length;
+	 if (len <= 1) return false;
+	 if (len === 2) return nums[0] === nums[1];
+	 const sum = nums.reduce((pre, cur) => pre + cur, 0);
+	 if (sum % 2 !== 0) return false;
+	 const T = sum / 2;
+	 const dp = new Array(T + 1).fill(false);
+	 dp[0] = true;
+	 for (let i = 0; i < nums.length; i ++) {
+		 for (let j = T; j >= nums[i]; j --) {
+			 dp[j] = dp[j] || dp[j - nums[i]];
+		 }
+	 }
+	 return dp[T];
+ }
