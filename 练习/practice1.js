@@ -15,5 +15,24 @@
  * 输出：0
  */
 var findUnsortedSubarray = function(nums) {
-
+  const len = nums.length;
+  if (len <= 1) return 0;
+  let left = right = -1;
+  let max = nums[0];
+  for (let i = 1; i < len; i ++) {
+    if (nums[i] >= max[0]) {
+      max = nums[i];
+    } else {
+      right = i;
+      for (let j = 0; j < i; j ++) {
+        if (nums[j] > nums[i]) {
+          left = Math.min(left, j);
+          break;
+        }
+      }
+    }
+  }
+  return right - left + 1;
 };
+
+console.log(findUnsortedSubarray([2,6,4,8,10,9,15]));
