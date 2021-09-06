@@ -37,3 +37,15 @@ var validPalindrome = function(s) {
   }
   return true;
 };
+
+
+
+const loopTree = (head) => {
+	const res = [];
+	const loop = (node) => {
+		res.push(node.val);
+		if (node.left) loop(node.left);
+		if (node.right) loop(node.right);
+	};
+	loop(head);
+};

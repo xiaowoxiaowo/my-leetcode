@@ -47,7 +47,7 @@ const permuteUnique = (nums) => {
 			if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) continue;     
       used[i] = true;
       dfs([...path, nums[i]]);                   
-      used[i] = false;     
+      used[i] = false;
     }
   }
   dfs([]);
