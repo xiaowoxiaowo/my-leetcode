@@ -1,37 +1,52 @@
 /**
- * leetcode 238. 除自身以外数组的乘积
+ * leetcode 338. 比特位计数
  * 
- * 给你一个长度为 n 的整数数组 nums，其中 n > 1，返回输出数组 output ，其中 output[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。
+ * 给定一个非负整数 num。对于 0 ≤ i ≤ num 范围中的每个数字 i ，计算其二进制数中的 1 的数目并将它们作为数组返回。
  * 
- * 输入: [1,2,3,4]
- * 输出: [24,12,8,6]
+ * 输入: 2
+ * 输出: [0,1,1]
  * 
- * 提示：题目数据保证数组之中任意元素的全部前缀元素和后缀（甚至是整个数组）的乘积都在 32 位整数范围内。
- * 说明: 请不要使用除法，且在 O(n) 时间复杂度内完成此题。
+ * 输入: 5
+ * 输出: [0,1,1,2,1,2]
  * 
+ * 要求算法的空间复杂度为O(n)。
+ * 要求在C++或任何其他语言中不使用任何内置函数
  */
-// 建立左右两个前缀积，当前项i的结果，只需要计算leftArr[i - 1] * rightArr[i + 1]即可
-var productExceptSelf = function(nums) {
-  const len = nums.length;
-  const leftArr = new Array(len).fill(nums[0]);
-  const rightArr = new Array(len).fill(nums[len - 1]);
-  for (let i = 1; i < len; i ++) {
-    leftArr[i] = nums[i] * leftArr[i - 1];
-  }
-  for (let i = len - 2; i >= 0; i --) {
-    rightArr[i] = nums[i] * rightArr[i + 1];
-  }
-  const res = [];
-  for (let i = 0; i < len; i ++) {
-    if (i === 0) {
-      res[i] = rightArr[1];
-    } else if (i === len - 1) {
-      res[i] = leftArr[len - 2];
+var countBits = function(n) {
+  const map = new Map();
+  let res = [0];
+  let pre = 0;
+  for (let i = 1; i <= n; i ++) {
+    if ((i % 2) === 0) {
+      let nextKey = 2;
+      map.clear(1);
+      while(true) {
+        if (map.has(nextKey)) {
+          map.delete(nextKey);
+          nextKey++;
+        } else {
+          map.set(nextKey, true);
+          break;
+        }
+      }
+      pre = map.size;
+      res.push(pre);
     } else {
-      res[i] = leftArr[i - 1] * rightArr[i + 1];
+      map.set(1, true);
+      res.push(++pre);
     }
   }
   return res;
 };
 
-console.log(productExceptSelf([1,2,3,4]));
+console.log(countBits(8));
+
+// 0000 0
+// 0001 1
+// 0010 2
+// 0011 3
+// 0100 4
+// 0101 5
+// 0110 6
+// 0111 7
+// 1000 8
